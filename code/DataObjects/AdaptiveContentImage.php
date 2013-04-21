@@ -8,16 +8,26 @@ class StructuredContentImage extends DataObject
     /**
      * @var array
      */
-    static $db = array(
+    public static $extensions = array(
+        'SortableDataObject'
+    );
+    /**
+     * @var array
+     */
+    public static $db = array(
         'Caption' => 'Text'
     );
     /**
      * @var array
      */
-    static $has_one = array(
+    public static $has_one = array(
         'Image' => 'Image',
-        'Parent' => 'StructuredContent'
+        'Parent' => 'DataObject'
     );
+    /**
+     * @param null $params
+     * @return FieldSet
+     */
     public function getCMSFields($params = null)
     {
         $fields = parent::getCMSFields($params);
