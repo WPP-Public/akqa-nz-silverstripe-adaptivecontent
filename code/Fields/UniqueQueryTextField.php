@@ -8,18 +8,18 @@ class UniqueQueryTextField extends TextField
     /**
      * @var
      */
-    protected $closure;
+    protected $callable;
     /**
-     * @param Closure $closure
+     * @param callable $callable
      * @param null     $name
      * @param null     $title
      * @param string   $value
      * @param null     $maxLength
      * @param null     $form
      */
-    function __construct(Closure $closure, $name, $title = null, $value = "", $maxLength = null, $form = null)
+    function __construct(callable $callable, $name, $title = null, $value = "", $maxLength = null, $form = null)
     {
-        $this->closure = $closure;
+        $this->callable = $callable;
         parent::__construct($name, $title, $value, $maxLength, $form);
     }
     /**
@@ -29,11 +29,11 @@ class UniqueQueryTextField extends TextField
      */
     function validate($validator)
     {
-        $query = $this->closure->__invoke($this->Value());
+        $query = call_user_func($this->callable, $this->Value());
         if ($query instanceof SQLQuery) {
             $result = $query->execute()->value();
         } else {
-            throw new RuntimeException('Closure must request an instance of SQLQuery');
+            throw new RuntimeException('Function must return an instance of SQLQuery');
         }
         if ($result && ($result > 0)) {
             $validator->validationError($this->name, "The value entered is not unique");

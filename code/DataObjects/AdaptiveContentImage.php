@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class StructuredContentImage
+ * Class AdaptiveContentImage
  */
-class StructuredContentImage extends DataObject
+class AdaptiveContentImage extends DataObject
 {
     /**
      * @var array

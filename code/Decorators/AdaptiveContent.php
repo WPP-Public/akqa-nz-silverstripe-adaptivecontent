@@ -62,24 +62,24 @@ class AdaptiveContent extends DataObjectDecorator
         );
         if ($this->owner->Identifier == '') {
             $fields->removeByName('Identifier');
-            $that = $this;
             $fields->replaceField(
                 'Title',
                 new UniqueQueryTextField(
-                    function ($title) use ($that) {
-                        return $that->getUniqueIdentifierQuery($that->getGeneratedIdentifier($title));
-                    },
+                    array(
+                        $this->owner,
+                        'getUniqueIdentifierQuery'
+                    ),
                     'Title'
                 )
             );
         } else {
-            $that = $this;
             $fields->replaceField(
                 'Identifier',
                 new UniqueQueryTextField(
-                    function ($identifier) use ($that) {
-                        return $that->getUniqueIdentifierQuery($identifier);
-                    },
+                    array(
+                        $this->owner,
+                        'getUniqueIdentifierQuery'
+                    ),
                     'Identifier'
                 )
             );

@@ -18,6 +18,22 @@ class AdaptiveContentVersioned extends Versioned
         );
     }
     /**
+     * @param null $class
+     * @return array
+     */
+    public function extraStatics($class = null)
+    {
+        return array(
+            'db' => array(
+                'Version' => 'Int',
+            ),
+            'has_many' => array(
+                'Versions' => ($class) ? $class : $this->owner->class
+            ),
+            'searchable_fields' => array()
+        );
+    }
+    /**
      * @param $fields
      */
     public function updateSummaryFields(&$fields)
@@ -30,12 +46,17 @@ class AdaptiveContentVersioned extends Versioned
             )
         );
     }
+    public function updateSearchableFields(&$fields)
+    {
+        unset($fields['isModifiedNice']);
+        unset($fields['isPublishedNice']);
+    }
     /**
      * @return bool
      */
     public function isPublished()
     {
-        return (bool) DB::query("SELECT \"ID\" FROM \"{$this->owner->ClassName}_Live\" WHERE \"ID\" = $this->owner->ID")->value();
+        return (bool) DB::query("SELECT \"ID\" FROM \"{$this->owner->ClassName}_Live\" WHERE \"ID\" = {$this->owner->ID}")->value();
     }
     /**
      * @return bool
@@ -90,7 +111,7 @@ class AdaptiveContentVersioned extends Versioned
                     'Message',
                     '<div class="message">This item contains unpublished changes</div>'
                 ),
-                'SortOrder' //TODO: This is a dependency
+                $this->owner->hasExtension('AdaptiveContentHierarchy') ? 'SortOrder' : 'Identifier'
             );
         }
         $fields->removeByName('Version');

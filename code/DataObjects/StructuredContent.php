@@ -149,7 +149,7 @@
 //        }
 //    }
 //    /**
-//     * @return RequiredFields
+//     * @return SortredFields
 //     */
 //    public function getCMSValidator()
 //    {

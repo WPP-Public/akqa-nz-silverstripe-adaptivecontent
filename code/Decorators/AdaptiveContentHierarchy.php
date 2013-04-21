@@ -3,24 +3,21 @@
 class AdaptiveContentHierarchy extends DataObjectDecorator
 {
     /**
-     * @var
+     * @var bool
      */
-    protected $relation;
+    protected $skipChildrenField = false;
     /**
-     * @var string
+     * @param boolean $skipChildrenField
      */
-    public static $default_sort = '`HierarchySortOrder` ASC';
-    /**
-     * @param $relation
-     */
-    public function __construct($relation)
+    public function setSkipChildrenField($skipChildrenField)
     {
-        $this->relation = $relation;
+        $this->skipChildrenField = $skipChildrenField;
     }
     /**
+     * @param null $class
      * @return array
      */
-    public function extraStatics()
+    public function extraStatics($class = null)
     {
         return array(
             'db' => array(
@@ -29,10 +26,10 @@ class AdaptiveContentHierarchy extends DataObjectDecorator
                 'SortOrder' => 'Int'
             ),
             'has_one' => array(
-                'Parent' => $this->relation,
+                'Parent' => ($class) ? $class : $this->owner->class,
             ),
             'has_many' => array(
-                'Children' => $this->relation
+                'Children' => ($class) ? $class : $this->owner->class
             )
         );
     }
@@ -83,28 +80,51 @@ class AdaptiveContentHierarchy extends DataObjectDecorator
      */
     public function updateCMSFields(FieldSet &$fields)
     {
-        $fields->replaceField(
-            'Children',
-            new DataObjectManager(
-                $this->owner,
+        if (!$this->skipChildrenField) {
+            $fields->replaceField(
                 'Children',
-                $this->relation,
-                array(
-                    'Title' => 'Title' // TODO: This is a dependency
-                ),
-                'getCMSFields',
-                null,
-                'SortOrder'
-            )
-        );
+                new DataObjectManager(
+                    $this->owner,
+                    'Children',
+                    $this->owner->class,
+                    array(
+                        'Title' => 'Title' // TODO: This is a dependency
+                    ),
+                    'getLimitedCMSFields',
+                    null,
+                    'SortOrder'
+                )
+            );
+        }
         $fields->removeByName('HierarchySortOrder');
         $fields->removeByName('HierarchyTitle');
         $fields->removeByName('Parent');
+        $fields->insertBefore(
+            $fields->dataFieldByName('SortOrder'),
+            'Identifier'
+        );
+    }
+    /**
+     * @return FieldSet
+     */
+    public function getLimitedCMSFields()
+    {
+        $this->setSkipChildrenField(true);
+        $fields = $this->owner->getCMSFields();
+        // TODO: This is a dependency
+        $fields->replaceField(
+            'HTML',
+            new SimpleHTMLEditorField(
+                'HTML',
+                'Html'
+            )
+        );
+        return $fields;
     }
     /**
      * @return string
      */
-    protected function getSortOrderChar()
+    public function getSortOrderChar()
     {
         $sortOrder = $this->owner->SortOrder + 33;
         $num = $sortOrder / 126;
