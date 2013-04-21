@@ -1,7 +1,7 @@
 {
-    "name": "heyday/silverstripe-structuredcontent",
+    "name": "heyday/silverstripe-adaptivecontent",
     "type": "silverstripe-module",
-    "description": "SilverStripe StructuredContent",
+    "description": "SilverStripe Adaptive Content",
     "authors": [
         {
             "name": "Cam Spiers",
