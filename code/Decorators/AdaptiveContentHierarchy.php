@@ -23,6 +23,8 @@ class AdaptiveContentHierarchy extends DataObjectDecorator
             'db' => array(
                 'HierarchySortOrder' => 'Varchar(255)',
                 'HierarchyTitle' => 'Varchar(255)',
+                'HierarchyIdentifier' => 'Varchar(255)',
+                'HierarchyDepth' => 'Int',
                 'SortOrder' => 'Int'
             ),
             'has_one' => array(
@@ -30,6 +32,9 @@ class AdaptiveContentHierarchy extends DataObjectDecorator
             ),
             'has_many' => array(
                 'Children' => ($class) ? $class : $this->owner->class
+            ),
+            'indexes' => array(
+                'HierarchyIdentifier' => true
             )
         );
     }
@@ -60,13 +65,19 @@ class AdaptiveContentHierarchy extends DataObjectDecorator
         $titles = array(
             $parent->Title
         );
+        $identifiers = array(
+            $parent->Identifier
+        );
         while ($parent->ParentID) {
             $parent = $parent->Parent();
             $sorts[] = $parent->getSortOrderChar();
             $titles[] = $parent->Title;
+            $identifiers[] = $parent->Identifier;
         }
         $this->owner->HierarchySortOrder = implode('', array_reverse($sorts));
         $this->owner->HierarchyTitle = implode(' -> ', array_reverse($titles));
+        $this->owner->HierarchyIdentifier = implode('/', array_reverse($identifiers));
+        $this->owner->HierarchyDepth = count($identifiers) - 1;
 
         $children = $this->owner->Children();
         if ($children instanceof IteratorAggregate) {
