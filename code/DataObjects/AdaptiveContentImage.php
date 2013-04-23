@@ -25,7 +25,7 @@ class AdaptiveContentImage extends DataObject
         'Parent' => 'DataObject'
     );
     /**
-     * @param null $params
+     * @param  null     $params
      * @return FieldSet
      */
     public function getCMSFields($params = null)
@@ -33,6 +33,7 @@ class AdaptiveContentImage extends DataObject
         $fields = parent::getCMSFields($params);
         $fields->removeByName('ParentID');
         $fields->removeByName('SortOrder');
+
         return $fields;
     }
 }

@@ -86,7 +86,7 @@ class AdaptiveContent extends DataObjectDecorator
         }
     }
     /**
-     * @param bool $title
+     * @param  bool   $title
      * @return string
      */
     public function getGeneratedIdentifier($title = false)
@@ -99,10 +99,11 @@ class AdaptiveContent extends DataObjectDecorator
         $t = ereg_replace('[^A-Za-z0-9]+','-',$t);
         $t = ereg_replace('-+','-',$t);
         $t = trim($t, '-');
+
         return $t;
     }
     /**
-     * @param bool|string $identifier
+     * @param  bool|string $identifier
      * @return SQLQuery
      */
     public function getUniqueIdentifierQuery($identifier = false)
@@ -110,6 +111,7 @@ class AdaptiveContent extends DataObjectDecorator
         if (!$identifier) {
             $identifier = $this->getGeneratedIdentifier();
         }
+
         return new SQLQuery(
             'COUNT(ID)',
             $this->owner->ClassName,

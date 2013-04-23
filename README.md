@@ -1,4 +1,4 @@
-# SilverStripe StructuredContent
+# SilverStripe Adaptive Content
 
 ## Installation (with composer)
 

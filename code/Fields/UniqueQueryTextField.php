@@ -17,7 +17,7 @@ class UniqueQueryTextField extends TextField
      * @param null     $maxLength
      * @param null     $form
      */
-    function __construct(callable $callable, $name, $title = null, $value = "", $maxLength = null, $form = null)
+    public function __construct(callable $callable, $name, $title = null, $value = "", $maxLength = null, $form = null)
     {
         $this->callable = $callable;
         parent::__construct($name, $title, $value, $maxLength, $form);
@@ -27,7 +27,7 @@ class UniqueQueryTextField extends TextField
      * @throws RuntimeException
      * @return bool
      */
-    function validate($validator)
+    public function validate($validator)
     {
         $query = call_user_func($this->callable, $this->Value());
         if ($query instanceof SQLQuery) {

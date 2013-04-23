@@ -18,7 +18,7 @@ class AdaptiveContentVersioned extends Versioned
         );
     }
     /**
-     * @param null $class
+     * @param  null  $class
      * @return array
      */
     public function extraStatics($class = null)
@@ -75,6 +75,7 @@ class AdaptiveContentVersioned extends Versioned
             'Live',
             $id
         );
+
         return ($stageVersion && $stageVersion != $liveVersion);
     }
     /**

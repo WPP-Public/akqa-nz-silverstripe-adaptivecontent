@@ -14,7 +14,7 @@ class AdaptiveContentHierarchy extends DataObjectDecorator
         $this->skipChildrenField = $skipChildrenField;
     }
     /**
-     * @param null $class
+     * @param  null  $class
      * @return array
      */
     public function extraStatics($class = null)
@@ -130,6 +130,7 @@ class AdaptiveContentHierarchy extends DataObjectDecorator
                 'Html'
             )
         );
+
         return $fields;
     }
     /**

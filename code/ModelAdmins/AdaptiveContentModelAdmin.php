@@ -50,9 +50,9 @@ class AdaptiveContentModelAdmin_RecordController extends ModelAdmin_RecordContro
         parent::init();
     }
     /**
-     * @param array          $data
-     * @param Form           $form
-     * @param SS_HTTPRequest $request
+     * @param  array                  $data
+     * @param  Form                   $form
+     * @param  SS_HTTPRequest         $request
      * @return SS_HTTPResponse|string
      */
     public function doPublish($data, $form, $request)
@@ -106,7 +106,7 @@ class AdaptiveContentModelAdmin_TableListField extends TableListField
     /**
      * @param SQLQuery $query
      */
-    function setCustomQuery(SQLQuery $query)
+    public function setCustomQuery(SQLQuery $query)
     {
         if (singleton($this->sourceClass)->hasExtension('AdaptiveContentHierarchy')) {
             $query->orderby('"HierarchySortOrder" ASC');
