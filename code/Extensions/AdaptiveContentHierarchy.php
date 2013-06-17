@@ -1,43 +1,30 @@
 <?php
 
-class AdaptiveContentHierarchy extends DataObjectDecorator
+/**
+ * Class AdaptiveContentHierarchy
+ */
+class AdaptiveContentHierarchy extends DataExtension
 {
     /**
      * @var bool
      */
     protected $skipChildrenField = false;
     /**
-     * @param boolean $skipChildrenField
+     * @var array
      */
-    public function setSkipChildrenField($skipChildrenField)
-    {
-        $this->skipChildrenField = $skipChildrenField;
-    }
+    private static $db = array(
+        'HierarchySortOrder' => 'Varchar(255)',
+        'HierarchyTitle' => 'Varchar(255)',
+        'HierarchyIdentifier' => 'Varchar(255)',
+        'HierarchyDepth' => 'Int',
+        'SortOrder' => 'Int'
+    );
     /**
-     * @param  null  $class
-     * @return array
+     * @var array
      */
-    public function extraStatics($class = null)
-    {
-        return array(
-            'db' => array(
-                'HierarchySortOrder' => 'Varchar(255)',
-                'HierarchyTitle' => 'Varchar(255)',
-                'HierarchyIdentifier' => 'Varchar(255)',
-                'HierarchyDepth' => 'Int',
-                'SortOrder' => 'Int'
-            ),
-            'has_one' => array(
-                'Parent' => ($class) ? $class : $this->owner->class,
-            ),
-            'has_many' => array(
-                'Children' => ($class) ? $class : $this->owner->class
-            ),
-            'indexes' => array(
-                'HierarchyIdentifier' => true
-            )
-        );
-    }
+    private static $indexes = array(
+        'HierarchyIdentifier' => true
+    );
     /**
      * @param $fields
      */
@@ -49,6 +36,30 @@ class AdaptiveContentHierarchy extends DataObjectDecorator
                 'HierarchyTitle' => 'Title'
             )
         );
+    }
+    /**
+     * @param $class
+     * @param $extension
+     * @param $args
+     * @return array
+     */
+    public static function get_extra_config($class, $extension, $args)
+    {
+        return array(
+            'has_one' => array(
+                'Parent' => $class
+            ),
+            'has_many' => array(
+                'Children' => $class
+            )
+        );
+    }
+    /**
+     * @param boolean $skipChildrenField
+     */
+    public function setSkipChildrenField($skipChildrenField)
+    {
+        $this->skipChildrenField = $skipChildrenField;
     }
     /**
      *
@@ -89,23 +100,23 @@ class AdaptiveContentHierarchy extends DataObjectDecorator
     /**
      * @param FieldSet $fields
      */
-    public function updateCMSFields(FieldSet &$fields)
+    public function updateCMSFields(FieldList $fields)
     {
         if (!$this->skipChildrenField) {
-            $fields->replaceField(
-                'Children',
-                new DataObjectManager(
-                    $this->owner,
-                    'Children',
-                    $this->owner->class,
-                    array(
-                        'Title' => 'Title' // TODO: This is a dependency
-                    ),
-                    'getLimitedCMSFields',
-                    null,
-                    'SortOrder'
-                )
-            );
+//            $fields->replaceField(
+//                'Children',
+//                new DataObjectManager(
+//                    $this->owner,
+//                    'Children',
+//                    $this->owner->class,
+//                    array(
+//                        'Title' => 'Title' // TODO: This is a dependency
+//                    ),
+//                    'getLimitedCMSFields',
+//                    null,
+//                    'SortOrder'
+//                )
+//            );
         }
         $fields->removeByName('HierarchySortOrder');
         $fields->removeByName('HierarchyTitle');
@@ -125,7 +136,7 @@ class AdaptiveContentHierarchy extends DataObjectDecorator
         // TODO: This is a dependency
         $fields->replaceField(
             'HTML',
-            new SimpleHTMLEditorField(
+            new HtmlEditorField(
                 'HTML',
                 'Html'
             )

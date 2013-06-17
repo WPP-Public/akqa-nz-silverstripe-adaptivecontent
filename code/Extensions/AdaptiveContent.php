@@ -3,31 +3,32 @@
 /**
  * Class AdaptiveContent
  */
-class AdaptiveContent extends DataObjectDecorator
+class AdaptiveContent extends DataExtension
 {
     /**
-     * @return array
+     * @var array
      */
-    public function extraStatics()
-    {
-        return array(
-            'db' => array(
-                'Identifier' => 'Varchar(255)',
-                'Title' => 'Varchar(255)',
-                'SecondaryIdentifier' => 'Varchar(255)',
-                'SubTitle' => 'Varchar(255)',
-                'Teaser' => 'Text',
-                'ShortTeaser' => 'Text',
-                'HTML' => 'HTMLText'
-            ),
-            'has_one' => array(
-                'LeadImage' => 'AdaptiveContentImage'
-            ),
-            'has_many' => array(
-                'Images' => 'AdaptiveContentImage'
-            )
-        );
-    }
+    private static $db = array(
+        'Identifier' => 'Varchar(255)',
+        'Title' => 'Varchar(255)',
+        'SecondaryIdentifier' => 'Varchar(255)',
+        'SubTitle' => 'Varchar(255)',
+        'Teaser' => 'Text',
+        'ShortTeaser' => 'Text',
+        'Content' => 'HTMLText'
+    );
+    /**
+     * @var array
+     */
+    private static $has_one = array(
+        'LeadImage' => 'AdaptiveContentImage'
+    );
+    /**
+     * @var array
+     */
+    private static $has_many = array(
+        'Images' => 'AdaptiveContentImage'
+    );
     /**
      *
      */
@@ -40,26 +41,26 @@ class AdaptiveContent extends DataObjectDecorator
     /**
      * @param FieldSet $fields
      */
-    public function updateCMSFields(FieldSet &$fields)
+    public function updateCMSFields(FieldList $fields)
     {
-        $fields->replaceField(
-            'Images',
-            new ImageDataObjectManager(
-                $this->owner,
-                'Images',
-                'AdaptiveContentImage',
-                'Image'
-            )
-        );
-        $fields->replaceField(
-            'LeadImageID',
-            new HasOneFileDataObjectManager(
-                $this->owner,
-                'LeadImage',
-                'AdaptiveContentImage',
-                'Image'
-            )
-        );
+//        $fields->replaceField(
+//            'Images',
+//            new ImageDataObjectManager(
+//                $this->owner,
+//                'Images',
+//                'AdaptiveContentImage',
+//                'Image'
+//            )
+//        );
+//        $fields->replaceField(
+//            'LeadImageID',
+//            new HasOneFileDataObjectManager(
+//                $this->owner,
+//                'LeadImage',
+//                'AdaptiveContentImage',
+//                'Image'
+//            )
+//        );
         if ($this->owner->Identifier == '') {
             $fields->removeByName('Identifier');
             $fields->replaceField(
@@ -91,16 +92,7 @@ class AdaptiveContent extends DataObjectDecorator
      */
     public function getGeneratedIdentifier($title = false)
     {
-        $title = $title ? $title : $this->owner->Title;
-        $t = (function_exists('mb_strtolower')) ? mb_strtolower($title) : strtolower($title);
-        $t = Object::create('Transliterator')->toASCII($t);
-        $t = str_replace('&amp;','-and-',$t);
-        $t = str_replace('&','-and-',$t);
-        $t = ereg_replace('[^A-Za-z0-9]+','-',$t);
-        $t = ereg_replace('-+','-',$t);
-        $t = trim($t, '-');
-
-        return $t;
+        return URLSegmentFilter::create()->filter($title ? $title : $this->owner->Title);
     }
     /**
      * @param  bool|string $identifier

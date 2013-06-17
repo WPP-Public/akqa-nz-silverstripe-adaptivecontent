@@ -21,14 +21,14 @@ class AdaptiveContentVersioned extends Versioned
      * @param  null  $class
      * @return array
      */
-    public function extraStatics($class = null)
+    public static function get_extra_config($class, $extension, $args)
     {
         return array(
             'db' => array(
                 'Version' => 'Int',
             ),
             'has_many' => array(
-                'Versions' => ($class) ? $class : $this->owner->class
+                'Versions' => $class
             ),
             'searchable_fields' => array()
         );
@@ -46,6 +46,9 @@ class AdaptiveContentVersioned extends Versioned
             )
         );
     }
+    /**
+     * @param $fields
+     */
     public function updateSearchableFields(&$fields)
     {
         unset($fields['isModifiedNice']);
@@ -103,7 +106,7 @@ class AdaptiveContentVersioned extends Versioned
     /**
      * @param FieldSet $fields
      */
-    public function updateCMSFields(FieldSet &$fields)
+    public function updateCMSFields(FieldList $fields)
     {
         if ($this->owner->exists() && $this->isModified()) {
             $fields->addFieldToTab(
@@ -121,7 +124,7 @@ class AdaptiveContentVersioned extends Versioned
     /**
      * @param FieldSet $actions
      */
-    public function updateCMSActions(FieldSet &$actions)
+    public function updateCMSActions(FieldList $actions)
     {
         $actions->push(
             new FormAction(

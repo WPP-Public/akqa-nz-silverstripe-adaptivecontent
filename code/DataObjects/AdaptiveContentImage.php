@@ -8,22 +8,21 @@ class AdaptiveContentImage extends DataObject
     /**
      * @var array
      */
-    public static $extensions = array(
-        'SortableDataObject'
+    private static $db = array(
+        'Caption' => 'Text',
+        'Sort' => 'Int'
     );
     /**
      * @var array
      */
-    public static $db = array(
-        'Caption' => 'Text'
-    );
-    /**
-     * @var array
-     */
-    public static $has_one = array(
+    private static $has_one = array(
         'Image' => 'Image',
         'Parent' => 'DataObject'
     );
+    /**
+     * @var string
+     */
+    private static $default_sort = 'Sort ASC';
     /**
      * @param  null     $params
      * @return FieldSet
@@ -32,7 +31,7 @@ class AdaptiveContentImage extends DataObject
     {
         $fields = parent::getCMSFields($params);
         $fields->removeByName('ParentID');
-        $fields->removeByName('SortOrder');
+        $fields->removeByName('Sort');
 
         return $fields;
     }
