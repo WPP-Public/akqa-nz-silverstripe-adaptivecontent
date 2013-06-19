@@ -62,26 +62,6 @@ class AdaptiveContentVersioned extends Versioned
         return (bool) DB::query("SELECT \"ID\" FROM \"{$this->owner->ClassName}_Live\" WHERE \"ID\" = {$this->owner->ID}")->value();
     }
     /**
-     * @return bool
-     */
-    public function isModified()
-    {
-        $classname = $this->owner->ClassName;
-        $id = $this->owner->ID;
-        $stageVersion = Versioned::get_versionnumber_by_stage(
-            $classname,
-            'Stage',
-            $id
-        );
-        $liveVersion = Versioned::get_versionnumber_by_stage(
-            $classname,
-            'Live',
-            $id
-        );
-
-        return ($stageVersion && $stageVersion != $liveVersion);
-    }
-    /**
      * @param $value
      * @return string
      */
@@ -101,45 +81,25 @@ class AdaptiveContentVersioned extends Versioned
      */
     public function isModifiedNice()
     {
-        return $this->getBooleanNice($this->isModified());
+        return $this->getBooleanNice($this->owner->stagesDiffer('Stage', 'Live'));
     }
     /**
      * @param FieldSet $fields
      */
     public function updateCMSFields(FieldList $fields)
     {
-        if ($this->owner->exists() && $this->isModified()) {
+        if ($this->owner->exists() && $this->owner->stagesDiffer('Stage', 'Live')) {
             $fields->addFieldToTab(
                 'Root.Main',
                 new LiteralField(
                     'Message',
                     '<div class="message">This item contains unpublished changes</div>'
                 ),
-                $this->owner->hasExtension('AdaptiveContentHierarchy') ? 'SortOrder' : 'Identifier'
+                'Identifier'
             );
         }
         $fields->removeByName('Version');
         $fields->removeByName('Versions');
-    }
-    /**
-     * @param FieldSet $actions
-     */
-    public function updateCMSActions(FieldList $actions)
-    {
-        $actions->push(
-            new FormAction(
-                'doPublish',
-                'Publish'
-            )
-        );
-        if ($this->owner->hasExtension('AdaptiveContentHierarchy')) {
-            $actions->push(
-                new FormAction(
-                    'doPublishChildren',
-                    'Publish Children'
-                )
-            );
-        }
     }
     /**
      * @param $fromStage

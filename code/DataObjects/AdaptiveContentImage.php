@@ -3,7 +3,7 @@
 /**
  * Class AdaptiveContentImage
  */
-class AdaptiveContentImage extends DataObject
+class AdaptiveContentImage extends Image
 {
     /**
      * @var array
@@ -11,13 +11,6 @@ class AdaptiveContentImage extends DataObject
     private static $db = array(
         'Caption' => 'Text',
         'Sort' => 'Int'
-    );
-    /**
-     * @var array
-     */
-    private static $has_one = array(
-        'Image' => 'Image',
-        'Parent' => 'DataObject'
     );
     /**
      * @var string
@@ -30,8 +23,8 @@ class AdaptiveContentImage extends DataObject
     public function getCMSFields($params = null)
     {
         $fields = parent::getCMSFields($params);
-        $fields->removeByName('ParentID');
-        $fields->removeByName('Sort');
+
+        $fields->addFieldToTab('Root.Main', new TextareaField('Caption'));
 
         return $fields;
     }

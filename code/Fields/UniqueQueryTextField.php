@@ -20,6 +20,7 @@ class UniqueQueryTextField extends TextField
     public function __construct(callable $callable, $name, $title = null, $value = "", $maxLength = null, $form = null)
     {
         $this->callable = $callable;
+        $this->addExtraClass('text');
         parent::__construct($name, $title, $value, $maxLength, $form);
     }
     /**
