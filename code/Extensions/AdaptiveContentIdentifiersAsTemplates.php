@@ -42,7 +42,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
             }
         }
 
-        return array_combine($availableTemplates, $availableTemplates);
+        return count($availableTemplates) > 0 ? array_combine($availableTemplates, $availableTemplates) : array();
     }
     /**
      * @return SSViewer

@@ -59,9 +59,7 @@ class AdaptiveContentVersioned extends Versioned
      */
     public function isPublished()
     {
-        return (bool)DB::query(
-            "SELECT \"ID\" FROM \"{$this->owner->ClassName}_Live\" WHERE \"ID\" = {$this->owner->ID}"
-        )->value();
+        return $this->latestPublished();
     }
     /**
      * @param $value
