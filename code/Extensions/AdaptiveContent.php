@@ -9,13 +9,13 @@ class AdaptiveContent extends DataExtension
      * @var array
      */
     private static $db = array(
-        'Identifier' => 'Varchar(255)',
-        'Title' => 'Varchar(255)',
+        'Identifier'          => 'Varchar(255)',
+        'Title'               => 'Varchar(255)',
         'SecondaryIdentifier' => 'Varchar(255)',
-        'SubTitle' => 'Varchar(255)',
-        'Teaser' => 'Text',
-        'ShortTeaser' => 'Text',
-        'Content' => 'HTMLText'
+        'SubTitle'            => 'Varchar(255)',
+        'Teaser'              => 'Text',
+        'ShortTeaser'         => 'Text',
+        'Content'             => 'HTMLText'
     );
     /**
      * @var array
@@ -30,7 +30,7 @@ class AdaptiveContent extends DataExtension
         'Images' => 'AdaptiveContentImage'
     );
     /**
-     *
+     * Generates identifier from title, when identifier doesn't exist
      */
     public function onBeforeWrite()
     {
@@ -39,7 +39,7 @@ class AdaptiveContent extends DataExtension
         }
     }
     /**
-     * @param FieldSet $fields
+     * @param FieldList $fields
      */
     public function updateCMSFields(FieldList $fields)
     {
@@ -53,10 +53,12 @@ class AdaptiveContent extends DataExtension
 
         if ($this->owner->Identifier == '') {
             $fields->removeByName('Identifier');
+        } else {
+            $fields->makeFieldReadonly('Identifier');
         }
     }
     /**
-     * @param  bool   $title
+     * @param  bool $title
      * @return string
      */
     public function getGeneratedIdentifier($title = false)

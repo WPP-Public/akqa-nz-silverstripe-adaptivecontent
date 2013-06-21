@@ -13,11 +13,11 @@ class AdaptiveContentHierarchy extends DataExtension
      * @var array
      */
     private static $db = array(
-        'HierarchySortOrder' => 'Varchar(255)',
-        'HierarchyTitle' => 'Varchar(255)',
+        'HierarchySortOrder'  => 'Varchar(255)',
+        'HierarchyTitle'      => 'Varchar(255)',
         'HierarchyIdentifier' => 'Varchar(255)',
-        'HierarchyDepth' => 'Int',
-        'SortOrder' => 'Int'
+        'HierarchyDepth'      => 'Int',
+        'SortOrder'           => 'Int'
     );
     /**
      * @var array
@@ -46,7 +46,7 @@ class AdaptiveContentHierarchy extends DataExtension
     public static function get_extra_config($class, $extension, $args)
     {
         return array(
-            'has_one' => array(
+            'has_one'  => array(
                 'Parent' => $class
             ),
             'has_many' => array(
@@ -66,7 +66,11 @@ class AdaptiveContentHierarchy extends DataExtension
      */
     public function onBeforeWrite()
     {
-        if ($this->owner->SortOrder === null && (array_key_exists('ParentID', $this->owner->toMap()) || $this->owner->exists())) {
+        if ($this->owner->SortOrder === null && (array_key_exists(
+                    'ParentID',
+                    $this->owner->toMap()
+                ) || $this->owner->exists())
+        ) {
             $this->owner->SortOrder = $this->getNextSortOrder();
         }
         $parent = $this->owner;

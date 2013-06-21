@@ -10,14 +10,14 @@ class AdaptiveContentImage extends Image
      */
     private static $db = array(
         'Caption' => 'Text',
-        'Sort' => 'Int'
+        'Sort'    => 'Int'
     );
     /**
      * @var string
      */
     private static $default_sort = 'Sort ASC';
     /**
-     * @param  null     $params
+     * @param  null $params
      * @return FieldSet
      */
     public function getCMSFields($params = null)

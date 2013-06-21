@@ -18,16 +18,16 @@ class AdaptiveContentVersioned extends Versioned
         );
     }
     /**
-     * @param  null  $class
+     * @param  null $class
      * @return array
      */
     public static function get_extra_config($class, $extension, $args)
     {
         return array(
-            'db' => array(
+            'db'                => array(
                 'Version' => 'Int',
             ),
-            'has_many' => array(
+            'has_many'          => array(
                 'Versions' => $class
             ),
             'searchable_fields' => array()
@@ -41,7 +41,7 @@ class AdaptiveContentVersioned extends Versioned
         $fields = array_merge(
             $fields,
             array(
-                'isModifiedNice' => 'Modified',
+                'isModifiedNice'  => 'Modified',
                 'isPublishedNice' => 'Published'
             )
         );
@@ -59,7 +59,9 @@ class AdaptiveContentVersioned extends Versioned
      */
     public function isPublished()
     {
-        return (bool) DB::query("SELECT \"ID\" FROM \"{$this->owner->ClassName}_Live\" WHERE \"ID\" = {$this->owner->ID}")->value();
+        return (bool)DB::query(
+            "SELECT \"ID\" FROM \"{$this->owner->ClassName}_Live\" WHERE \"ID\" = {$this->owner->ID}"
+        )->value();
     }
     /**
      * @param $value
