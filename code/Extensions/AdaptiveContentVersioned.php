@@ -86,7 +86,7 @@ class AdaptiveContentVersioned extends Versioned
         return $this->getBooleanNice($this->owner->stagesDiffer('Stage', 'Live'));
     }
     /**
-     * @param FieldSet $fields
+     * @param FieldList $fields
      */
     public function updateCMSFields(FieldList $fields)
     {
@@ -112,7 +112,7 @@ class AdaptiveContentVersioned extends Versioned
         if ($this->owner->hasExtension('AdaptiveContentHierarchy')) {
             $this->owner->publish($fromStage, $toStage);
             $children = $this->owner->Children();
-            if ($children instanceof DataObjectSet) {
+            if ($children instanceof DataList) {
                 foreach ($children as $child) {
                     $child->publishChildren($fromStage, $toStage);
                 }

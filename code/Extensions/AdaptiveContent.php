@@ -43,14 +43,6 @@ class AdaptiveContent extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
-        $fields->replaceField(
-            'LeadImageID',
-            new UploadField(
-                'LeadImage',
-                'Lead Image'
-            )
-        );
-
         if ($this->owner->Identifier == '') {
             $fields->removeByName('Identifier');
         } else {
