@@ -57,9 +57,31 @@ class AdaptiveContentVersioned extends Versioned
     /**
      * @return bool
      */
+    public function isNew()
+    {
+        $id = $this->owner->ID;
+        if (empty($id)) {
+            return true;
+        }
+        if (is_numeric($id)) {
+            return false;
+        }
+    }
+    /**
+     * @return bool
+     */
     public function isPublished()
     {
-        return $this->latestPublished();
+        if ($this->isNew()) {
+            return false;
+        }
+
+        $table = $this->owner->class;
+        while (($p = get_parent_class($table)) !== 'DataObject') {
+            $table = $p;
+        }
+
+        return (bool) DB::query("SELECT \"ID\" FROM \"{$table}_Live\" WHERE \"ID\" = {$this->owner->ID}")->value();
     }
     /**
      * @param $value
@@ -81,14 +103,14 @@ class AdaptiveContentVersioned extends Versioned
      */
     public function isModifiedNice()
     {
-        return $this->getBooleanNice($this->owner->stagesDiffer('Stage', 'Live'));
+        return $this->getBooleanNice($this->stagesDiffer('Stage', 'Live'));
     }
     /**
      * @param FieldList $fields
      */
     public function updateCMSFields(FieldList $fields)
     {
-        if ($this->owner->exists() && $this->owner->stagesDiffer('Stage', 'Live')) {
+        if ($this->owner->exists() && $this->stagesDiffer('Stage', 'Live')) {
             $fields->addFieldToTab(
                 'Root.Main',
                 new LiteralField(
@@ -108,7 +130,7 @@ class AdaptiveContentVersioned extends Versioned
     public function publishChildren($fromStage, $toStage)
     {
         if ($this->owner->hasExtension('AdaptiveContentHierarchy')) {
-            $this->owner->publish($fromStage, $toStage);
+            $this->publish($fromStage, $toStage);
             $children = $this->owner->Children();
             if ($children instanceof DataList) {
                 foreach ($children as $child) {

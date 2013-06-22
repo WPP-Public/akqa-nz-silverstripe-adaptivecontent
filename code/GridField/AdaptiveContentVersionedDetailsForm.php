@@ -1,27 +1,57 @@
 <?php
 
-class AdaptiveContentPublishDetailsForm extends GridFieldDetailForm
+class AdaptiveContentVersionedDetailsForm extends GridFieldDetailForm
 {
 }
 
-class AdaptiveContentPublishDetailsForm_ItemRequest extends GridFieldDetailForm_ItemRequest
+class AdaptiveContentVersionedDetailsForm_ItemRequest extends GridFieldDetailForm_ItemRequest
 {
     public function ItemEditForm()
     {
         $form = parent::ItemEditForm();
+        /* @var $actions FieldList */
+        $actions = $form->Actions();
+
+        $actions->replaceField(
+            'action_doSave',
+            FormAction::create('save', _t('SiteTree.BUTTONSAVED', 'Saved'))
+                ->setAttribute('data-icon', 'accept')
+                ->setAttribute('data-icon-alternate', 'addpage')
+                ->setAttribute('data-text-alternate', _t('CMSMain.SAVEDRAFT','Save draft'))
+                ->setUseButtonTag(true)
+        );
 
         /* @var $publish FormAction */
-        $publish = FormAction::create('doPublish', _t('SiteTree.BUTTONSAVEPUBLISH', 'Save & publish'))
-            ->setUseButtonTag(true)
-            ->addExtraClass('ss-ui-action-constructive')
-            ->setAttribute('data-icon', 'accept');
+        $publish = FormAction::create('publish', _t('SiteTree.BUTTONPUBLISHED', 'Published'))
+            ->setAttribute('data-icon', 'accept')
+            ->setAttribute('data-icon-alternate', 'disk')
+            ->setAttribute('data-text-alternate', _t('SiteTree.BUTTONSAVEPUBLISH', 'Save & publish'))
+            ->setUseButtonTag(true);
 
-        $form->Actions()->push($publish);
+        if ($this->record->stagesDiffer('Stage', 'Live')) {
+            $publish->addExtraClass('ss-ui-alternate');
+        }
+
+        $actions->push($publish);
+
+        if ($this->record->isPublished()) {
+            /* @var $unpublish FormAction */
+            $unpublish = FormAction::create('unpublish', _t('SiteTree.BUTTONUNPUBLISH', 'Unpublish'), 'delete')
+                    ->addExtraClass('ss-ui-action-destructive');
+
+            $actions->push($unpublish);
+        }
+
 
         return $form;
     }
 
-    public function doPublish($data, $form)
+    public function save($data, $form)
+    {
+        return $this->doSave($data, $form);
+    }
+
+    public function publish($data, $form)
     {
         $new_record = $this->record->ID == 0;
         $controller = Controller::curr();
@@ -97,5 +127,19 @@ class AdaptiveContentPublishDetailsForm_ItemRequest extends GridFieldDetailForm_
 
             return $controller->redirect($noActionURL, 302);
         }
+    }
+
+    public function unPublish()
+    {
+        $origStage = Versioned::current_stage();
+        Versioned::reading_stage('Live');
+
+        // This way our ID won't be unset
+        $clone = clone $this->record;
+        $clone->delete();
+
+        Versioned::reading_stage($origStage);
+
+        return $this->edit(Controller::curr()->getRequest());
     }
 }
