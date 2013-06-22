@@ -61,7 +61,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         $templates = array(
             $this->owner->ClassName . '_' . $this->owner->Identifier
         );
-        if (empty($this->owner->SecondaryIdentifier)) {
+        if (!empty($this->owner->SecondaryIdentifier)) {
             $templates[] = $this->owner->ClassName . '_' . $this->owner->SecondaryIdentifier;
         }
         $templates[] = $this->owner->ClassName;
