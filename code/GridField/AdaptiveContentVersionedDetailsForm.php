@@ -1,11 +1,20 @@
 <?php
 
+/**
+ * Class AdaptiveContentVersionedDetailsForm
+ */
 class AdaptiveContentVersionedDetailsForm extends GridFieldDetailForm
 {
 }
 
+/**
+ * Class AdaptiveContentVersionedDetailsForm_ItemRequest
+ */
 class AdaptiveContentVersionedDetailsForm_ItemRequest extends GridFieldDetailForm_ItemRequest
 {
+    /**
+     * @return Form
+     */
     public function ItemEditForm()
     {
         $form = parent::ItemEditForm();
@@ -17,7 +26,7 @@ class AdaptiveContentVersionedDetailsForm_ItemRequest extends GridFieldDetailFor
             FormAction::create('save', _t('SiteTree.BUTTONSAVED', 'Saved'))
                 ->setAttribute('data-icon', 'accept')
                 ->setAttribute('data-icon-alternate', 'addpage')
-                ->setAttribute('data-text-alternate', _t('CMSMain.SAVEDRAFT','Save draft'))
+                ->setAttribute('data-text-alternate', _t('CMSMain.SAVEDRAFT', 'Save draft'))
                 ->setUseButtonTag(true)
         );
 
@@ -37,7 +46,7 @@ class AdaptiveContentVersionedDetailsForm_ItemRequest extends GridFieldDetailFor
         if ($this->record->isPublished()) {
             /* @var $unpublish FormAction */
             $unpublish = FormAction::create('unpublish', _t('SiteTree.BUTTONUNPUBLISH', 'Unpublish'), 'delete')
-                    ->addExtraClass('ss-ui-action-destructive');
+                ->addExtraClass('ss-ui-action-destructive');
 
             $actions->push($unpublish);
         }
@@ -46,11 +55,21 @@ class AdaptiveContentVersionedDetailsForm_ItemRequest extends GridFieldDetailFor
         return $form;
     }
 
+    /**
+     * @param $data
+     * @param $form
+     * @return HTMLText|SS_HTTPResponse|ViewableData_Customised
+     */
     public function save($data, $form)
     {
         return $this->doSave($data, $form);
     }
 
+    /**
+     * @param $data
+     * @param $form
+     * @return HTMLText|SS_HTTPResponse|ViewableData_Customised
+     */
     public function publish($data, $form)
     {
         $new_record = $this->record->ID == 0;
@@ -129,6 +148,9 @@ class AdaptiveContentVersionedDetailsForm_ItemRequest extends GridFieldDetailFor
         }
     }
 
+    /**
+     * @return HTMLText|ViewableData_Customised
+     */
     public function unPublish()
     {
         $origStage = Versioned::current_stage();
