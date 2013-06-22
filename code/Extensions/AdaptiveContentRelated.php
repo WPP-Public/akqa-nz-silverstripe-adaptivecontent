@@ -31,4 +31,18 @@ class AdaptiveContentRelated extends DataExtension
             )
         );
     }
+    /**
+     * @param FieldList $fields
+     */
+    public function updateCMSFields(FieldList $fields)
+    {
+        $fields->replaceField(
+            'RelationID',
+            new TreeDropdownField(
+                'RelationID',
+                'Relation',
+                $this->relationClass
+            )
+        );
+    }
 }
