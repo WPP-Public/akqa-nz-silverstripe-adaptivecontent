@@ -114,8 +114,8 @@ class AdaptiveContentVersioned extends Versioned
             $fields->addFieldToTab(
                 'Root.Main',
                 new LiteralField(
-                    'Message',
-                    '<div class="message">This item contains unpublished changes</div>'
+                    'UnpublishedMessage',
+                    '<div class="message bad">This item contains unpublished changes</div>'
                 ),
                 'Identifier'
             );
