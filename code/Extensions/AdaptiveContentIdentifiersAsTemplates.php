@@ -20,6 +20,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         );
 
         $field->setHasEmptyDefault(true);
+        $field->setEmptyString('Default');
     }
     /**
      * @return array
@@ -38,7 +39,10 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
                 && isset($template['themes'])
                 && isset($template['themes'][$currentTheme])
             ) {
-                $availableTemplates[] = substr($templateName, strlen($className) + 1);
+                $templateName = isset($template['themes'][$currentTheme]['Include'])
+                    ? $template['themes'][$currentTheme]['Include']
+                    : $template['themes'][$currentTheme]['Layout'];
+                $availableTemplates[] = substr(basename($templateName), strlen($className) + 1, -3);
             }
         }
 
