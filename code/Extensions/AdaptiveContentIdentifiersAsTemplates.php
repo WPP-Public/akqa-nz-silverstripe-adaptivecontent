@@ -39,8 +39,8 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
                 && isset($template['themes'])
                 && isset($template['themes'][$currentTheme])
             ) {
-                $templateName = isset($template['themes'][$currentTheme]['Include'])
-                    ? $template['themes'][$currentTheme]['Include']
+                $templateName = isset($template['themes'][$currentTheme]['Includes'])
+                    ? $template['themes'][$currentTheme]['Includes']
                     : $template['themes'][$currentTheme]['Layout'];
                 $availableTemplates[] = substr(basename($templateName), strlen($className) + 1, -3);
             }
