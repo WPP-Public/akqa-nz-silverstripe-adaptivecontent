@@ -3,7 +3,7 @@
 /**
  * Class AdaptiveContentImage
  */
-class AdaptiveContentImage extends Image
+class AdaptiveContentImage extends DataObject
 {
     /**
      * @var array
@@ -13,18 +13,32 @@ class AdaptiveContentImage extends Image
         'Sort'    => 'Int'
     );
     /**
+     * @var array
+     */
+    private static $has_one = array(
+        'Image' => 'Image',
+        'Parent' => 'DataObject'
+    );
+    /**
      * @var string
      */
     private static $default_sort = 'Sort ASC';
     /**
-     * @param  null $params
-     * @return FieldSet
+     * @var array
      */
-    public function getCMSFields($params = null)
+    private static $summary_fields = array(
+        'Image' => 'Image',
+        'Caption' => 'Caption'
+    );
+    /**
+     * @return FieldList
+     */
+    public function getCMSFields()
     {
-        $fields = parent::getCMSFields($params);
+        $fields = new FieldList();
 
-        $fields->addFieldToTab('Root.Main', new TextareaField('Caption'));
+        $fields->push(new TextareaField('Caption'));
+        $fields->push(new UploadField('Image', 'Image'));
 
         return $fields;
     }

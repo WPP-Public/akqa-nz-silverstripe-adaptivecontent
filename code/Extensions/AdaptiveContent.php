@@ -21,7 +21,7 @@ class AdaptiveContent extends DataExtension
      * @var array
      */
     private static $has_one = array(
-        'LeadImage' => 'AdaptiveContentImage'
+        'LeadImage' => 'Image'
     );
     /**
      * @var array
@@ -38,6 +38,7 @@ class AdaptiveContent extends DataExtension
             $this->owner->Identifier = $this->getGeneratedIdentifier();
         }
     }
+
     /**
      * @param FieldList $fields
      */
@@ -48,6 +49,20 @@ class AdaptiveContent extends DataExtension
         } else {
             $fields->makeFieldReadonly('Identifier');
         }
+
+        $fields->removeByName('Images');
+
+        $fields->addFieldToTab(
+            'Root.Images',
+            new GridField(
+                'Images',
+                'Images',
+                $this->owner->Images(),
+                $config = GridFieldConfig_RelationEditor::create()
+            )
+        );
+
+        $config->addComponent(new GridFieldBulkImageUpload('ImageID', array('Caption')));
     }
     /**
      * @param  bool $title
