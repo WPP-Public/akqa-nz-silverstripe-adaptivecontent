@@ -13,6 +13,14 @@ class AdaptiveContentVersionedDetailsForm extends GridFieldDetailForm
 class AdaptiveContentVersionedDetailsForm_ItemRequest extends GridFieldDetailForm_ItemRequest
 {
     /**
+     * @var array
+     */
+    private static $allowed_actions = array(
+        'edit',
+        'view',
+        'ItemEditForm'
+    );
+    /**
      * @return Form
      */
     public function ItemEditForm()
