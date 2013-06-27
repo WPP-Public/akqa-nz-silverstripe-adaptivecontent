@@ -11,6 +11,7 @@ class AdaptiveContent extends DataExtension
     private static $db = array(
         'Identifier'          => 'Varchar(255)',
         'SecondaryIdentifier' => 'Varchar(255)',
+        'TertiaryIdentifier'  => 'Varchar(255)',
         'Title'               => 'Varchar(255)',
         'SubTitle'            => 'Varchar(255)',
         'Teaser'              => 'Text',
