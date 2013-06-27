@@ -10,12 +10,20 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
+        /** @var Config_ForClass $config */
+        $config = $this->owner->config();
+
         $fields->replaceField(
             'SecondaryIdentifier',
             $field = new DropdownField(
                 'SecondaryIdentifier',
                 'Secondary Identifier',
-                $this->getAvailableSecondaryIdentifiers()
+                $this->getAvailableSecondaryIdentifiers(
+                    $config->get(
+                        'secondaryIdentifierAsTemplatesMap',
+                        Config::UNINHERITED
+                    )
+                )
             )
         );
 
@@ -23,14 +31,14 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         $field->setEmptyString('Default');
     }
     /**
+     * @param array $map
      * @return array
      */
-    public function getAvailableSecondaryIdentifiers()
+    public function getAvailableSecondaryIdentifiers(array $map)
     {
         $className = strtolower($this->owner->ClassName);
         $currentTheme = Config::inst()->get('SSViewer', 'theme');
         $templates = SS_TemplateLoader::instance()->getManifest()->getTemplates();
-
         $availableTemplates = array();
 
         foreach ($templates as $templateName => $template) {
@@ -42,11 +50,19 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
                 $templateName = isset($template['themes'][$currentTheme]['Includes'])
                     ? $template['themes'][$currentTheme]['Includes']
                     : $template['themes'][$currentTheme]['Layout'];
-                $availableTemplates[] = substr(basename($templateName), strlen($className) + 1, -3);
+                $templateName = substr(basename($templateName), strlen($className) + 1, -3);
+                $availableTemplates[$templateName] = $templateName;
             }
         }
 
-        return count($availableTemplates) > 0 ? array_combine($availableTemplates, $availableTemplates) : array();
+        $availableTemplates = is_array($availableTemplates) ? $availableTemplates : array();
+        $map = is_array($map) ? $map : array();
+
+        foreach ($availableTemplates as $key => $value) {
+            $availableTemplates[$key] = isset($map[$value]) ? $map[$value] : $value;
+        }
+
+        return $availableTemplates;
     }
     /**
      * @return SSViewer
