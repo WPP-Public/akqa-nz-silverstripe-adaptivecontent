@@ -47,6 +47,22 @@ class AdaptiveContentVersionedDetailsForm_ItemRequest extends GridFieldDetailFor
 
         if ($this->record->stagesDiffer('Stage', 'Live')) {
             $publish->addExtraClass('ss-ui-alternate');
+
+            $actions->push(
+                FormAction::create(
+                    'rollback',
+                    _t(
+                        'SiteTree.BUTTONCANCELDRAFT',
+                        'Cancel draft changes'
+                    ),
+                    'delete'
+                )->setDescription(
+                    _t(
+                        'SiteTree.BUTTONCANCELDRAFTDESC',
+                        'Delete your draft and revert to the currently published page'
+                    )
+                )
+            );
         }
 
         $actions->push($publish);
@@ -169,6 +185,29 @@ class AdaptiveContentVersionedDetailsForm_ItemRequest extends GridFieldDetailFor
         $clone->delete();
 
         Versioned::reading_stage($origStage);
+
+        return $this->edit(Controller::curr()->getRequest());
+    }
+    /**
+     * @param $data
+     * @param $form
+     * @return HTMLText|ViewableData_Customised
+     */
+    public function rollback($data, $form)
+    {
+        if (!$this->record->canEdit()) {
+            return Controller::curr()->httpError(403);
+        }
+
+        $this->record->doRollbackTo('Live');
+
+        $this->record = DataList::create($this->record->class)->byID($this->record->ID);
+
+        $message = _t(
+            'CMSMain.ROLLEDBACKPUBv2',"Rolled back to published version."
+        );
+
+        $form->sessionMessage($message, 'good');
 
         return $this->edit(Controller::curr()->getRequest());
     }

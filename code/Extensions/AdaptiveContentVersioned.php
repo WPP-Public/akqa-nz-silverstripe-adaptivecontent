@@ -139,4 +139,19 @@ class AdaptiveContentVersioned extends Versioned
             }
         }
     }
+    /**
+     *
+     */
+    public function onBeforeWrite()
+    {
+        $fieldsIgnoredByVersioning = array('Version');
+
+        $changedFields = array_keys($this->owner->getChangedFields(true, 2));
+        $oneChangedFields = array_keys($this->owner->getChangedFields(true, 1));
+
+        if ($oneChangedFields && !array_diff($changedFields, $fieldsIgnoredByVersioning)) {
+            // This will have the affect of preserving the versioning
+            $this->migrateVersion($this->owner->Version);
+        }
+    }
 }
