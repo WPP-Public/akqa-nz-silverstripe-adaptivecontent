@@ -1,6 +1,6 @@
 # SilverStripe Adaptive Content
 
-Provides reuseable DataExtension's containing fields suitable for adaptive content
+Provides reuseable DataExtension's containing fields suitable for adaptive content.
 
 See `1.0` branch for SilverStripe 2.4 compatible version.
 
