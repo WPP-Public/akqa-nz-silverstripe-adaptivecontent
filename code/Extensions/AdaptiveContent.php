@@ -22,7 +22,8 @@ class AdaptiveContent extends DataExtension
      * @var array
      */
     private static $has_one = array(
-        'LeadImage' => 'Image'
+        'LeadImage' => 'Image',
+        'LeadFile'  => 'File'
     );
     /**
      * @var array
