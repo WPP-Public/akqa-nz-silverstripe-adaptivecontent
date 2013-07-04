@@ -22,14 +22,16 @@ class AdaptiveContent extends DataExtension
      * @var array
      */
     private static $has_one = array(
-        'LeadImage' => 'Image',
-        'LeadFile'  => 'File'
+        'LeadImage'      => 'Image',
+        'SecondaryImage' => 'Image',
+        'LeadFile'       => 'File'
     );
     /**
      * @var array
      */
     private static $has_many = array(
-        'Images' => 'AdaptiveContentImage'
+        'Images' => 'AdaptiveContentImage',
+        'Files'  => 'File'
     );
     /**
      * Generates identifier from title, when identifier doesn't exist
