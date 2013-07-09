@@ -16,7 +16,8 @@ class AdaptiveContent extends DataExtension
         'SubTitle'            => 'Varchar(255)',
         'Teaser'              => 'Text',
         'ShortTeaser'         => 'Text',
-        'Content'             => 'HTMLText'
+        'Content'             => 'HTMLText',
+        'SecondaryContent'    => 'HTMLText'
     );
     /**
      * @var array
@@ -42,7 +43,6 @@ class AdaptiveContent extends DataExtension
             $this->owner->Identifier = $this->getGeneratedIdentifier();
         }
     }
-
     /**
      * @param FieldList $fields
      */
