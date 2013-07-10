@@ -27,8 +27,10 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
             )
         );
 
-        $field->setHasEmptyDefault(true);
-        $field->setEmptyString('Default');
+        if (Config::inst()->forClass(__CLASS__)->get('HasDefault')) {
+            $field->setHasEmptyDefault(true);
+            $field->setEmptyString('Default');
+        }
     }
     /**
      * @param array $map
@@ -85,7 +87,9 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         if (!empty($this->owner->SecondaryIdentifier)) {
             $templates[] = $this->owner->ClassName . '_' . $this->owner->SecondaryIdentifier;
         }
-        $templates[] = $this->owner->ClassName;
+        if (Config::inst()->forClass(__CLASS__)->get('HasDefault')) {
+            $templates[] = $this->owner->ClassName;
+        }
         return $templates;
     }
 }
