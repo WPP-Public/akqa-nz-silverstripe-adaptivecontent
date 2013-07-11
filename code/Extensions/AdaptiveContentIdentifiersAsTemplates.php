@@ -5,6 +5,9 @@
  */
 class AdaptiveContentIdentifiersAsTemplates extends DataExtension
 {
+    /**
+     *  If not is has default mode then populate defaults
+     */
     public function populateDefaults()
     {
         if (!Config::inst()->forClass(__CLASS__)->get('HasDefault')) {
