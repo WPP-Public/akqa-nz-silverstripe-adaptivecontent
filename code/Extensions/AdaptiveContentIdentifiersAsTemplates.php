@@ -76,10 +76,39 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         return $availableTemplates;
     }
     /**
+     * @return string
+     */
+    public function getSecondaryIdentifierNice()
+    {
+        /** @var Config_ForClass $config */
+        $config = $this->owner->config();
+        
+        $identifiersMap = $config->get(
+            'secondaryIdentifierAsTemplatesMap',
+            Config::UNINHERITED
+        );
+        
+        return isset($identifiersMap[$this->owner->SecondaryIdentifier])
+            ? $identifiersMap[$this->owner->SecondaryIdentifier]
+            : $this->owner->SecondaryIdentifier;
+    }
+    /**
+     * Tries to get an SSViewer based on the current configuration
+     * @throws Exception
      * @return SSViewer
      */
     public function getSSViewer()
     {
+        $templates = SS_TemplateLoader::instance()->findTemplates(
+            $tryTemplates = $this->getTemplates(), Config::inst()->get('SSViewer', 'theme')
+        );
+
+        if (!$templates) {
+            throw new Exception(
+                'Can\'t find a template from list: "'.implode('", "', $tryTemplates).'"'
+            );
+        }
+        
         return new SSViewer(
             $this->getTemplates()
         );
@@ -98,7 +127,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         }
         if (Config::inst()->forClass(__CLASS__)->get('HasDefault')) {
             $templates[] = $this->owner->ClassName;
-        }
+        }        
         return $templates;
     }
 }
