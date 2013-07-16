@@ -16,6 +16,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         }
     }
     /**
+     * Adds a field the the cms allowing the user to choose a secondary identifier based on templates
      * @param FieldList $fields
      */
     public function updateCMSFields(FieldList $fields)
@@ -43,6 +44,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         }
     }
     /**
+     * Finds all available template based on the ClassName
      * @param array $map
      * @return array
      */
@@ -76,6 +78,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         return $availableTemplates;
     }
     /**
+     * Returns the secondary identifier in a nicer format if specified in config "secondaryIdentifierAsTemplatesMap"
      * @return string
      */
     public function getSecondaryIdentifierNice()
@@ -114,6 +117,10 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         );
     }
     /**
+     * If classname "ComponentSlice", Identifier is "my-slice", and SecondaryIdentifier is "TwoColumn"
+     * then output: array("ComponentSlice_my-slice", "ComponentSlice_TwoColumn")
+     * 
+     * If HasDefault is true, output: array("ComponentSlice_my-slice", "ComponentSlice_TwoColumn", "ComponentSlice")
      * @return array
      */
     public function getTemplates()
