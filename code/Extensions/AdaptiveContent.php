@@ -31,7 +31,7 @@ class AdaptiveContent extends DataExtension
      * @var array
      */
     private static $has_many = array(
-        'Images' => 'AdaptiveContentImage',
+        'Images' => 'Image',
         'Files'  => 'File'
     );
     /**
@@ -55,18 +55,18 @@ class AdaptiveContent extends DataExtension
         }
 
         $fields->removeByName('Images');
-
         $fields->addFieldToTab(
             'Root.Images',
-            new GridField(
-                'Images',
-                'Images',
-                $this->owner->Images(),
-                $config = GridFieldConfig_RelationEditor::create()
-            )
+            new UploadField('Images', 'Images', $this->owner->Images())
         );
 
-        $config->addComponent(new GridFieldBulkImageUpload('ImageID', array('Caption')));
+        $fields->removeByName('Files');
+        $fields->addFieldToTab(
+            'Root.Files',
+            new UploadField('Files', 'Files', $this->owner->Files())
+        );
+
+
     }
     /**
      * @param  bool $title

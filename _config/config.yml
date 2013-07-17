@@ -3,3 +3,7 @@ Name: identifiersastemplates
 ---
 AdaptiveContentIdentifiersAsTemplates:
   HasDefault: true
+
+Image:
+  extensions:
+    - AdaptiveContentImageExtension
