@@ -101,19 +101,9 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
      * @return SSViewer
      */
     public function getSSViewer()
-    {
-        $templates = SS_TemplateLoader::instance()->findTemplates(
-            $tryTemplates = $this->getTemplates(), Config::inst()->get('SSViewer', 'theme')
-        );
-
-        if (!$templates) {
-            throw new Exception(
-                'Can\'t find a template from list: "'.implode('", "', $tryTemplates).'"'
-            );
-        }
-        
+    {        
         return new SSViewer(
-            $this->getTemplates()
+            $this->getTemplate()
         );
     }
     /**
@@ -134,7 +124,25 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         }
         if (Config::inst()->forClass(__CLASS__)->get('HasDefault')) {
             $templates[] = $this->owner->ClassName;
-        }        
+        }
         return $templates;
+    }
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    public function getTemplate()
+    {
+        $templates = SS_TemplateLoader::instance()->findTemplates(
+            $tryTemplates = $this->getTemplates(), Config::inst()->get('SSViewer', 'theme')
+        );
+
+        if (!$templates) {
+            throw new Exception(
+                'Can\'t find a template from list: "'.implode('", "', $tryTemplates).'"'
+            );
+        }
+        
+        return reset($templates);
     }
 }
