@@ -9,7 +9,6 @@
 		}
 	],
 	"require": {
-		"colymba/gridfield-bulk-editing-tools": "dev-master"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~3.7",
