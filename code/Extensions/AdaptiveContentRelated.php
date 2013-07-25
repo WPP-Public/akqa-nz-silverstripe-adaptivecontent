@@ -6,6 +6,12 @@
 class AdaptiveContentRelated extends DataExtension
 {
     /**
+     * @var array
+     */
+    private static $db = array(
+        'RelationLink' => 'Varchar(255)'
+    );
+    /**
      * @var
      */
     private $relationClass;
