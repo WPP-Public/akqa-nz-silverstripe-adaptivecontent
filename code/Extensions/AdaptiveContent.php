@@ -30,7 +30,7 @@ class AdaptiveContent extends DataExtension
     /**
      * @var array
      */
-    private static $has_many = array(
+    private static $many_many = array(
         'Images' => 'Image',
         'Files'  => 'File'
     );
