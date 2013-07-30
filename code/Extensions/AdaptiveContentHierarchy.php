@@ -102,26 +102,10 @@ class AdaptiveContentHierarchy extends DataExtension
         }
     }
     /**
-     * @param FieldSet $fields
+     * @param FieldList $fields
      */
     public function updateCMSFields(FieldList $fields)
     {
-        if (!$this->skipChildrenField) {
-//            $fields->replaceField(
-//                'Children',
-//                new DataObjectManager(
-//                    $this->owner,
-//                    'Children',
-//                    $this->owner->class,
-//                    array(
-//                        'Title' => 'Title' // TODO: This is a dependency
-//                    ),
-//                    'getLimitedCMSFields',
-//                    null,
-//                    'SortOrder'
-//                )
-//            );
-        }
         $fields->removeByName('HierarchySortOrder');
         $fields->removeByName('HierarchyTitle');
         $fields->removeByName('Parent');
@@ -167,21 +151,19 @@ class AdaptiveContentHierarchy extends DataExtension
     protected function getNextSortOrder()
     {
         $siblings = $this->getSiblings();
-        if ($siblings instanceof DataObjectSet) {
-            return $siblings->Last()->SortOrder + 1;
+        if ($siblings instanceof DataList) {
+            return ($do = $siblings->last()) instanceof DataObject ? $do->SortOrder + 1 : 0;
         } else {
             return 0;
         }
     }
     /**
-     * @return mixed
+     * @return DataList
      */
     protected function getSiblings()
     {
-        return DataObject::get(
-            $this->owner->ClassName,
-            "ParentID = '{$this->owner->ParentID}'",
-            'SortOrder ASC'
-        );
+        return DataList::create($this->owner->ClassName)
+            ->filter('ParentID', $this->owner->ParentID)
+            ->sort('SortOrder', 'ASC');
     }
 }
