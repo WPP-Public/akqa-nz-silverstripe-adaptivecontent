@@ -19,6 +19,10 @@ class AdaptiveContentHierarchy extends DataExtension
         'Sort'                => 'Int'
     );
     /**
+     * @var string
+     */
+    private static $default_sort = 'Sort ASC';
+    /**
      * @var array
      */
     private static $indexes = array(
@@ -104,12 +108,17 @@ class AdaptiveContentHierarchy extends DataExtension
             )
         );
 
+        $where = sprintf(
+            "ParentID = '%s'",
+            $this->owner->ID
+        );
+        
         if ($this->owner->hasExtension('VersionedDataObject')) {
-            $config->addComponent(new GridFieldVersionedOrderableRows('Sort'));
+            $config->addComponent(new GridFieldWhereableVersionedOrderableRows('Sort', $where));
             $config->removeComponentsByType('GridFieldDetailForm');
             $config->addComponent(new VersionedDataObjectDetailsForm());
         } else {
-            $config->addComponent(new GridFieldOrderableRows('Sort'));
+            $config->addComponent(new GridFieldWhereableOrderableRows('Sort', $where));
         }
     }
     /**
@@ -119,6 +128,6 @@ class AdaptiveContentHierarchy extends DataExtension
     {
         return DataList::create($this->owner->ClassName)
             ->filter('ParentID', $this->owner->ParentID)
-            ->sort('SortOrder', 'ASC');
+            ->sort('Sort', 'ASC');
     }
 }
