@@ -80,7 +80,7 @@ class AdaptiveContentHierarchy extends DataExtension
 
         $children = $this->owner->Children();
         
-        if ($children instanceof IteratorAggregate) {
+        if ($children instanceof SS_List && $children->count()) {
             foreach ($children as $child) {
                 $child->write();
             }
