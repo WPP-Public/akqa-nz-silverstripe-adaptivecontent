@@ -48,7 +48,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
      * @param array $map
      * @return array
      */
-    public function getAvailableSecondaryIdentifiers(array $map = array())
+    public function getAvailableSecondaryIdentifiers($map = null)
     {
         $className = strtolower($this->owner->ClassName);
         $currentTheme = Config::inst()->get('SSViewer', 'theme');
@@ -71,8 +71,10 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
 
         $availableTemplates = is_array($availableTemplates) ? $availableTemplates : array();
 
-        foreach ($availableTemplates as $key => $value) {
-            $availableTemplates[$key] = isset($map[$value]) ? $map[$value] : $value;
+        if (is_array($map)) {
+            foreach ($availableTemplates as $key => $value) {
+                $availableTemplates[$key] = isset($map[$value]) ? $map[$value] : $value;
+            }
         }
 
         return $availableTemplates;
