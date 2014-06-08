@@ -50,21 +50,21 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
      */
     public function getAvailableSecondaryIdentifiers($map = null)
     {
-        $className = strtolower($this->owner->ClassName);
+        $prefix = strtolower($this->owner->getTemplateClass());
         $currentTheme = Config::inst()->get('SSViewer', 'theme');
         $templates = SS_TemplateLoader::instance()->getManifest()->getTemplates();
         $availableTemplates = array();
 
         foreach ($templates as $templateName => $template) {
             if (
-                fnmatch($className . '_*', $templateName)
+                fnmatch($prefix . '_*', $templateName)
                 && isset($template['themes'])
                 && isset($template['themes'][$currentTheme])
             ) {
                 $templateName = isset($template['themes'][$currentTheme]['Includes'])
                     ? $template['themes'][$currentTheme]['Includes']
                     : $template['themes'][$currentTheme]['Layout'];
-                $templateName = substr(basename($templateName), strlen($className) + 1, -3);
+                $templateName = substr(basename($templateName), strlen($prefix) + 1, -3);
                 $availableTemplates[$templateName] = $templateName;
             }
         }
@@ -118,14 +118,16 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
     public function getTemplates()
     {
         $templates = array();
+        $prefix = $this->owner->getTemplateClass();
+
         if (!empty($this->owner->Identifier)) {
-            $templates[] = $this->owner->ClassName . '_' . $this->owner->Identifier;
+            $templates[] = $prefix . '_' . $this->owner->Identifier;
         }
         if (!empty($this->owner->SecondaryIdentifier)) {
-            $templates[] = $this->owner->ClassName . '_' . $this->owner->SecondaryIdentifier;
+            $templates[] = $prefix . '_' . $this->owner->SecondaryIdentifier;
         }
-        if (Config::inst()->forClass(__CLASS__)->get('HasDefault')) {
-            $templates[] = $this->owner->ClassName;
+        if (Config::inst()->forClass($prefix)->get('HasDefault')) {
+            $templates[] = $prefix;
         }
         return $templates;
     }
@@ -146,5 +148,18 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         }
         
         return reset($templates);
+    }
+
+    /**
+     * Return the class name to prefix templates with
+     *
+     * This method should be called through $this->owner within this extension so that it
+     * can be overridden in the owner class, or by extensions/traits on the owner class.
+     *
+     * @return string
+     */
+    public function getTemplateClass()
+    {
+        return $this->owner->ClassName;
     }
 }
