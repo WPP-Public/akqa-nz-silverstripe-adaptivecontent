@@ -8,6 +8,11 @@
 			"email": "camspiers@gmail.com"
 		}
 	],
+	"autoload": {
+		"psr-4": {
+			"Heyday\\AdaptiveContent\\SilverStripe\\": "src"
+		}
+	},
 	"require": {
 		"composer/installers": "~1.0",
 		"heyday/silverstripe-gridfieldversionedorderablerows": "~0.1.0",
