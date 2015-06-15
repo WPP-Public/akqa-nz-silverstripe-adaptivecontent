@@ -61,9 +61,9 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
                 && isset($template['themes'])
                 && isset($template['themes'][$currentTheme])
             ) {
-                $templateName = isset($template['themes'][$currentTheme]['Includes'])
-                    ? $template['themes'][$currentTheme]['Includes']
-                    : $template['themes'][$currentTheme]['Layout'];
+                // SilverStripe transforms all template names to lowercase.
+                // We want the original filename, so this needs to be extracted from the template file path
+                $templateName = $this->getFirstLeafNode($template);
                 $templateName = substr(basename($templateName), strlen($prefix) + 1, -3);
                 $availableTemplates[$templateName] = $templateName;
             }
@@ -161,5 +161,23 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
     public function getTemplateClass()
     {
         return $this->owner->ClassName;
+    }
+
+    /**
+     * Given a set of nested arrays, return the first leaf encountered
+     *
+     * @param string[] $tree
+     * @return mixed
+     */
+    protected function getFirstLeafNode(array $tree)
+    {
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveArrayIterator($tree),
+            RecursiveIteratorIterator::LEAVES_ONLY
+        );
+
+        foreach($iterator as $value) {
+            return $value;
+        }
     }
 }
