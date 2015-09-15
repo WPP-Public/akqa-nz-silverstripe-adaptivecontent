@@ -5,24 +5,21 @@
  */
 class AdaptiveContentRelated extends DataExtension
 {
-    /**
-     * @var array
-     */
     private static $db = array(
         'RelationLink' => 'Varchar(255)'
     );
-    /**
-     * @var
-     */
+
     private $relationClass;
+
     /**
-     * @param $relationClass
+     * @param string $relationClass
      */
     public function __construct($relationClass)
     {
         $this->relationClass = $relationClass;
         parent::__construct();
     }
+
     /**
      * @param $class
      * @param $extension
@@ -37,6 +34,7 @@ class AdaptiveContentRelated extends DataExtension
             )
         );
     }
+
     /**
      * @param FieldList $fields
      */

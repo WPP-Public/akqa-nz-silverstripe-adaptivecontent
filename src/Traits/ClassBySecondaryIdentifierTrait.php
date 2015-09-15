@@ -50,4 +50,4 @@ trait ClassBySecondaryIdentifierTrait
             $this->setClassName(__CLASS__);
         }
     }
-} 
+}

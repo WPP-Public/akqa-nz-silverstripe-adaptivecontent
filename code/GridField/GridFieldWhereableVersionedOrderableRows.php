@@ -10,6 +10,7 @@ class GridFieldWhereableVersionedOrderableRows extends GridFieldVersionedOrderab
      * @var string
      */
     protected $maxWhereClause;
+
     /**
      * @param string $sortField
      * @param string $maxWhereClause

@@ -15,6 +15,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
             $this->owner->SecondaryIdentifier = reset($identifiers);
         }
     }
+
     /**
      * Adds a field the the cms allowing the user to choose a secondary identifier based on templates
      * @param FieldList $fields
@@ -43,6 +44,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
             $field->setEmptyString('Default');
         }
     }
+
     /**
      * Finds all available template based on the ClassName
      * @param array $map
@@ -79,6 +81,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
 
         return $availableTemplates;
     }
+
     /**
      * Returns the secondary identifier in a nicer format if specified in config "secondaryIdentifierAsTemplatesMap"
      * @return string
@@ -87,31 +90,33 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
     {
         /** @var Config_ForClass $config */
         $config = $this->owner->config();
-        
+
         $identifiersMap = $config->get(
             'secondaryIdentifierAsTemplatesMap',
             Config::UNINHERITED
         );
-        
+
         return isset($identifiersMap[$this->owner->SecondaryIdentifier])
             ? $identifiersMap[$this->owner->SecondaryIdentifier]
             : $this->owner->SecondaryIdentifier;
     }
+
     /**
      * Tries to get an SSViewer based on the current configuration
      * @throws Exception
      * @return SSViewer
      */
     public function getSSViewer()
-    {        
+    {
         return new SSViewer(
             $this->getTemplate()
         );
     }
+
     /**
      * If classname "ComponentSlice", Identifier is "my-slice", and SecondaryIdentifier is "TwoColumn"
      * then output: array("ComponentSlice_my-slice", "ComponentSlice_TwoColumn")
-     * 
+     *
      * If HasDefault is true, output: array("ComponentSlice_my-slice", "ComponentSlice_TwoColumn", "ComponentSlice")
      * @return array
      */
@@ -131,6 +136,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
         }
         return $templates;
     }
+
     /**
      * @return mixed
      * @throws Exception
@@ -146,7 +152,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
                 'Can\'t find a template from list: "'.implode('", "', $tryTemplates).'"'
             );
         }
-        
+
         return reset($templates);
     }
 

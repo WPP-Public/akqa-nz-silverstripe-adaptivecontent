@@ -9,25 +9,20 @@ class AdaptiveContentHierarchy extends DataExtension
      * @var bool
      */
     protected $skipChildrenField = false;
-    /**
-     * @var array
-     */
+
     private static $db = array(
         'HierarchyTitle'      => 'Varchar(255)',
         'HierarchyIdentifier' => 'Varchar(255)',
         'HierarchyDepth'      => 'Int',
         'Sort'                => 'Int'
     );
-    /**
-     * @var string
-     */
+
     private static $default_sort = 'Sort ASC';
-    /**
-     * @var array
-     */
+
     private static $indexes = array(
         'HierarchyIdentifier' => true
     );
+
     /**
      * @param $class
      * @param $extension
@@ -45,6 +40,7 @@ class AdaptiveContentHierarchy extends DataExtension
             )
         );
     }
+
     /**
      * @param $fields
      */
@@ -57,39 +53,38 @@ class AdaptiveContentHierarchy extends DataExtension
             )
         );
     }
-    /**
-     *
-     */
+
     public function onBeforeWrite()
     {
         $parent = $this->owner;
-        
+
         $titles = array(
             $parent->Title
         );
-        
+
         $identifiers = array(
             $parent->Identifier
         );
-        
+
         while ($parent->ParentID) {
             $parent = $parent->Parent();
             $titles[] = $parent->Title;
             $identifiers[] = $parent->Identifier;
         }
-        
+
         $this->owner->HierarchyTitle = implode(' -> ', array_reverse($titles));
         $this->owner->HierarchyIdentifier = implode('/', array_reverse($identifiers));
         $this->owner->HierarchyDepth = count($identifiers) - 1;
 
         $children = $this->owner->Children();
-        
+
         if ($children instanceof SS_List && $children->count()) {
             foreach ($children as $child) {
                 $child->write();
             }
         }
     }
+
     /**
      * @param FieldList $fields
      */
@@ -97,7 +92,7 @@ class AdaptiveContentHierarchy extends DataExtension
     {
         $fields->removeByName('HierarchyTitle');
         $fields->removeByName('Parent');
-        
+
         $fields->addFieldToTab(
             'Root.Children',
             new GridField(
@@ -112,7 +107,7 @@ class AdaptiveContentHierarchy extends DataExtension
             "ParentID = '%s'",
             $this->owner->ID
         );
-        
+
         if ($this->owner->hasExtension('VersionedDataObject')) {
             $config->addComponent(new GridFieldWhereableVersionedOrderableRows('Sort', $where));
             $config->removeComponentsByType('GridFieldDetailForm');
@@ -121,6 +116,7 @@ class AdaptiveContentHierarchy extends DataExtension
             $config->addComponent(new GridFieldWhereableOrderableRows('Sort', $where));
         }
     }
+
     /**
      * @return DataList
      */

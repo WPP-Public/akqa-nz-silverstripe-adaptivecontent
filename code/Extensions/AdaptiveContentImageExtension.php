@@ -5,7 +5,6 @@
  */
 class AdaptiveContentImageExtension extends Extension
 {
-
     /**
      * @param FieldList $fields
      */
@@ -18,5 +17,4 @@ class AdaptiveContentImageExtension extends Extension
         );
 
     }
-
 }
