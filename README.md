@@ -2,8 +2,6 @@
 
 Generic sets of fields as data extensions. Originally intended to be the back-end for an "adaptive" content strategy (content adapting to device/context), but generally quite useful as a set of common, reusable fields.
 
-See [heyday/silverstripe-slices](https://github.com/heyday/silverstripe-slices) for an example implementation.
-
 See `1.0` branch for SilverStripe 2.4 compatible version.
 
 ## Installation (with composer)
@@ -29,6 +27,10 @@ SomePage:
     - AdaptiveContentHierarchy
     - AdaptiveContentRelated('Page')
 ```
+
+## Example use
+
+See [heyday/silverstripe-slices](https://github.com/heyday/silverstripe-slices) for an example use of this module.
 
 ## Unit testing
 
