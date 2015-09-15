@@ -1,7 +1,11 @@
 <?php
 
 /**
- * Class AdaptiveContentIdentifiersAsTemplates
+ * Secondary identifiers as templates
+ *
+ * This extension renders the SecondaryIdentifier field from the AdaptiveContent extension
+ * as a dropdown list of templates. It was primarily written for use with pre 1.0 versions
+ * of the heyday/silverstripe-slices module, so may not be much use on its own.
  */
 class AdaptiveContentIdentifiersAsTemplates extends DataExtension
 {
