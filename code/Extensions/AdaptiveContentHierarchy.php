@@ -1,5 +1,7 @@
 <?php
 
+use Heyday\VersionedDataObjects\VersionedDataObject;
+
 /**
  * Class AdaptiveContentHierarchy
  */
