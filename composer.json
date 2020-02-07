@@ -16,7 +16,7 @@
 	"require": {
 		"composer/installers": "~1.0",
 		"heyday/silverstripe-gridfieldversionedorderablerows": "~0.3",
-		"heyday/silverstripe-versioneddataobjects": "^1.0"
+		"heyday/silverstripe-versioneddataobjects": "^2.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~3.7",
