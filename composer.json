@@ -10,7 +10,7 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Heyday\\AdaptiveContent\\SilverStripe\\": "src"
+			"tomstgeorge\\AdaptiveContent\\SilverStripe\\": "src"
 		}
 	},
 	"require": {
