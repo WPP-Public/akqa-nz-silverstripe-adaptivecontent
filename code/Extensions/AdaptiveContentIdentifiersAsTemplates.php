@@ -1,5 +1,9 @@
 <?php
 
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\DropdownField;
+
 /**
  * Secondary identifiers as templates
  *

@@ -1,5 +1,9 @@
 <?php
 
+use SilverStripe\Core\Extension;
+use SilverStripe\Forms\TextareaField;
+use SilverStripe\Forms\FieldList;
+
 /**
  * Class AdaptiveContentImageExtension
  */

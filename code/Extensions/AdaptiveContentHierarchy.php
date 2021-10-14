@@ -1,6 +1,10 @@
 <?php
 
 use Heyday\VersionedDataObjects\VersionedDataObject;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\ORM\DataList;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\GridField\GridField;
 
 /**
  * Class AdaptiveContentHierarchy

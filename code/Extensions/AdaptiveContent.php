@@ -1,5 +1,12 @@
 <?php
 
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Assets\Image;
+use SilverStripe\Assets\File;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\View\Parsers\URLSegmentFilter;
+
 /**
  * Class AdaptiveContent
  */
@@ -23,16 +30,16 @@ class AdaptiveContent extends DataExtension
      * @var array
      */
     private static $has_one = array(
-        'LeadImage'      => 'Image',
-        'SecondaryImage' => 'Image',
-        'LeadFile'       => 'File'
+        'LeadImage'      => Image::class,
+        'SecondaryImage' => Image::class,
+        'LeadFile'       => File::class
     );
     /**
      * @var array
      */
     private static $many_many = array(
-        'Images' => 'Image',
-        'Files'  => 'File'
+        'Images' => Image::class,
+        'Files'  => File::class
     );
     /**
      * Generates identifier from title, when identifier doesn't exist

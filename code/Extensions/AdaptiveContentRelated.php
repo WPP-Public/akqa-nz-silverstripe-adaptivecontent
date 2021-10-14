@@ -1,5 +1,9 @@
 <?php
 
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\TreeDropdownField;
+use SilverStripe\Forms\FieldList;
+
 /**
  * Class AdaptiveContentRelated
  */
