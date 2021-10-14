@@ -4,6 +4,6 @@ Name: identifiersastemplates
 AdaptiveContentIdentifiersAsTemplates:
   HasDefault: true
 
-Image:
+SilverStripe\Assets\Image:
   extensions:
     - AdaptiveContentImageExtension

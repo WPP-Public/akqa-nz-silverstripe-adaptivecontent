@@ -1,5 +1,9 @@
 <?php
 
+use Heyday\GridFieldVersionedOrderableRows\GridFieldVersionedOrderableRows;
+use SilverStripe\ORM\DB;
+
+
 /**
  * Allows a where clause when using versioned orderable rows
  * Class GridFieldWhereableOrderableRows

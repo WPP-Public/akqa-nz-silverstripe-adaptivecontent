@@ -1,4 +1,5 @@
 <?php
+use SilverStripe\Forms\TextField;
 
 /**
  * Class UniqueQueryTextField

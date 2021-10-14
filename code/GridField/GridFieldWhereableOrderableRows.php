@@ -1,5 +1,8 @@
 <?php
 
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+use Silverstripe\ORM\DB;
+
 /**
  * Allows a where clause when using orderable rows
  * Class GridFieldWhereableOrderableRows
