@@ -15,12 +15,11 @@
 	},
 	"require": {
 		"composer/installers": "~1.0",
-		"heyday/silverstripe-gridfieldversionedorderablerows": "dev-ss4-upgrade",
-		"heyday/silverstripe-versioneddataobjects": "^2.0"
+		"heyday/silverstripe-gridfieldversionedorderablerows": "dev-ss4-upgrade"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~3.7",
-		"silverstripe/framework": "~2.4"
+		"silverstripe/framework": "~4.0"
 	},
 	"extra": {
 		"installer-paths": {
