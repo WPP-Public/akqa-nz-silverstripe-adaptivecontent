@@ -1,7 +1,8 @@
 <?php
 
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
-use Silverstripe\ORM\DB;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\DataList;
 
 /**
  * Allows a where clause when using orderable rows
