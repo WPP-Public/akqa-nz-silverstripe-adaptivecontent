@@ -2,7 +2,7 @@
 
 use Heyday\GridFieldVersionedOrderableRows\GridFieldVersionedOrderableRows;
 use SilverStripe\ORM\DB;
-
+use SilverStripe\ORM\DataList;
 
 /**
  * Allows a where clause when using versioned orderable rows
