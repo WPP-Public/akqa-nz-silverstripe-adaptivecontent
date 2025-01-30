@@ -6,17 +6,17 @@ device/context), but generally quite useful as a set of common, reusable fields.
 
 ## Installation (with composer)
 
-	$ composer require heyday/silverstripe-adaptivecontent:~3.0
+	$   composer require heyday/silverstripe-adaptivecontent
 
 ## Usage
 
 The main component of this module can be used simply by adding the
-`AdaptiveContent` extension to a dataobject or page:
+`AdaptiveContent` extension to a DataObject or Page instance:
 
 ```yaml
 SomeDataObject:
   extensions:
-    - AdaptiveContent
+    - Heyday\AdaptiveContent\Extensions\AdaptiveContent
 ```
 
 The other field extensions work in the same way:
@@ -24,9 +24,9 @@ The other field extensions work in the same way:
 ```yaml
 SomePage:
   extensions:
-    - AdaptiveContent
-    - AdaptiveContentHierarchy
-    - AdaptiveContentRelated('Page')
+    - Heyday\AdaptiveContent\Extensions\AdaptiveContent
+    - Heyday\AdaptiveContent\Extensions\AdaptiveContentHierarchy
+    - Heyday\AdaptiveContent\Extensions\AdaptiveContentRelated('Page')
 ```
 
 ## Example use
