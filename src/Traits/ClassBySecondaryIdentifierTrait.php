@@ -1,6 +1,6 @@
 <?php
 
-namespace Heyday\AdaptiveContent\SilverStripe\Traits;
+namespace Heyday\AdaptiveContent\Traits;
 
 /**
  * Allow setting the class of a DataObject using AdaptiveContent's SecondaryIdentifier field
@@ -13,7 +13,7 @@ namespace Heyday\AdaptiveContent\SilverStripe\Traits;
  * secondaryIdentifierClassMap:
  *   MyTemplate: MyTemplateClass
  *
- * @package Heyday\AdaptiveContent\SilverStripe\Traits
+ * @package Heyday\AdaptiveContent\Traits
  */
 trait ClassBySecondaryIdentifierTrait
 {

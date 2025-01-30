@@ -1,5 +1,7 @@
 <?php
 
+namespace Heyday\AdaptiveContent\Extensions;
+
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;

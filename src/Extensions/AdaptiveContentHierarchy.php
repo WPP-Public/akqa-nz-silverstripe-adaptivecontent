@@ -1,10 +1,14 @@
 <?php
 
-use Heyday\VersionedDataObjects\VersionedDataObject;
+namespace Heyday\AdaptiveContent\Extensions;
+
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\DataList;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\ORM\SS_List;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 /**
  * Class AdaptiveContentHierarchy
@@ -16,18 +20,18 @@ class AdaptiveContentHierarchy extends DataExtension
      */
     protected $skipChildrenField = false;
 
-    private static $db = array(
+    private static $db = [
         'HierarchyTitle'      => 'Varchar(255)',
         'HierarchyIdentifier' => 'Varchar(255)',
         'HierarchyDepth'      => 'Int',
         'Sort'                => 'Int'
-    );
+    ];
 
     private static $default_sort = 'Sort ASC';
 
-    private static $indexes = array(
+    private static $indexes = [
         'HierarchyIdentifier' => true
-    );
+    ];
 
     /**
      * @param $class
@@ -109,18 +113,7 @@ class AdaptiveContentHierarchy extends DataExtension
             )
         );
 
-        $where = sprintf(
-            "ParentID = '%s'",
-            $this->owner->ID
-        );
-
-        if ($this->owner->hasExtension('VersionedDataObject')) {
-            $config->addComponent(new GridFieldWhereableVersionedOrderableRows('Sort', $where));
-            $config->removeComponentsByType('GridFieldDetailForm');
-            $config->addComponent(new VersionedDataObjectDetailsForm());
-        } else {
-            $config->addComponent(new GridFieldWhereableOrderableRows('Sort', $where));
-        }
+        $config->addComponent(new GridFieldOrderableRows('Sort'));
     }
 
     /**

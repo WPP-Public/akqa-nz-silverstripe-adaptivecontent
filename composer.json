@@ -1,34 +1,27 @@
 {
-	"name": "tomstgeorge/silverstripe-adaptivecontent",
-	"type": "silverstripe-module",
-	"description": "SilverStripe Adaptive Content",
-	"authors": [
-		{
-			"name": "Cam Spiers",
-			"email": "camspiers@gmail.com"
-		}
-	],
-	"autoload": {
-		"psr-4": {
-			"tomstgeorge\\AdaptiveContent\\SilverStripe\\": "src"
-		}
-	},
-	"require": {
-		"composer/installers": "~1.0",
-		"heyday/silverstripe-gridfieldversionedorderablerows": "dev-ss4-upgrade"
-	},
-	"require-dev": {
-		"phpunit/phpunit": "~3.7",
-		"silverstripe/framework": "~4.0"
-	},
-	"extra": {
-		"installer-paths": {
-			"sapphire": [
-				"silverstripe/framework"
-			]
-		},
-		"branch-alias": {
-			"dev-master": "3.0.x-dev"
-		}
-	}
+  "name": "akqa-nz/silverstripe-adaptivecontent",
+  "type": "silverstripe-vendormodule",
+  "description": "SilverStripe Adaptive Content",
+  "autoload": {
+    "psr-4": {
+      "Heyday\\AdaptiveContent\\": "src"
+    }
+  },
+  "require": {
+    "silverstripe/framework": "^4 | ^5"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-main": "3.0.x-dev"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/installers": true,
+      "silverstripe/vendor-plugin": true
+    }
+  }
 }

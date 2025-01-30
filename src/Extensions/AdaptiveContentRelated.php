@@ -1,5 +1,7 @@
 <?php
 
+namespace Heyday\AdaptiveContent\Extensions;
+
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\TreeDropdownField;
 use SilverStripe\Forms\FieldList;
@@ -9,9 +11,9 @@ use SilverStripe\Forms\FieldList;
  */
 class AdaptiveContentRelated extends DataExtension
 {
-    private static $db = array(
+    private static $db = [
         'RelationLink' => 'Varchar(255)'
-    );
+    ];
 
     private $relationClass;
 

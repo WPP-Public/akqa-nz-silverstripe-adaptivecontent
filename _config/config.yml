@@ -1,9 +1,0 @@
----
-Name: identifiersastemplates
----
-AdaptiveContentIdentifiersAsTemplates:
-  HasDefault: true
-
-SilverStripe\Assets\Image:
-  extensions:
-    - AdaptiveContentImageExtension
