@@ -1,5 +1,5 @@
-{
-    "name": "akqa-nz/silverstripe-adaptivecontent",
+    {
+    "name": "heyday/silverstripe-adaptivecontent",
     "type": "silverstripe-vendormodule",
     "description": "SilverStripe Adaptive Content",
     "autoload": {
