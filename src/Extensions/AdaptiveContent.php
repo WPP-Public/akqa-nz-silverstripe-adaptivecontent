@@ -17,7 +17,7 @@ class AdaptiveContent extends DataExtension
     /**
      * @var array
      */
-    private static $db = array(
+    private static $db = [
         'Identifier'          => 'Varchar(255)',
         'SecondaryIdentifier' => 'Varchar(255)',
         'TertiaryIdentifier'  => 'Varchar(255)',
@@ -27,22 +27,25 @@ class AdaptiveContent extends DataExtension
         'ShortTeaser'         => 'Text',
         'Content'             => 'HTMLText',
         'SecondaryContent'    => 'HTMLText'
-    );
+    ];
+
     /**
      * @var array
      */
-    private static $has_one = array(
+    private static $has_one = [
         'LeadImage'      => Image::class,
         'SecondaryImage' => Image::class,
         'LeadFile'       => File::class
-    );
+    ];
+
     /**
      * @var array
      */
-    private static $many_many = array(
+    private static $many_many = [
         'Images' => Image::class,
         'Files'  => File::class
-    );
+    ];
+
     /**
      * Generates identifier from title, when identifier doesn't exist
      */
@@ -52,6 +55,7 @@ class AdaptiveContent extends DataExtension
             $this->owner->Identifier = $this->getGeneratedIdentifier();
         }
     }
+
     /**
      * @param FieldList $fields
      */
@@ -63,20 +67,26 @@ class AdaptiveContent extends DataExtension
             $fields->makeFieldReadonly('Identifier');
         }
 
-        $fields->removeByName('Images');
-        $fields->addFieldToTab(
-            'Root.Images',
-            new UploadField('Images', 'Images', $this->owner->Images())
-        );
+        $fields->removeByName([
+            'Images',
+            'Files'
+        ]);
 
-        $fields->removeByName('Files');
-        $fields->addFieldToTab(
-            'Root.Files',
-            new UploadField('Files', 'Files', $this->owner->Files())
-        );
+        if ($this->owner->hasMethod('Images')) {
+            $fields->addFieldToTab(
+                'Root.Images',
+                UploadField::create('Images', 'Images', $this->owner->Images())
+            );
+        }
 
-
+        if ($this->owner->hasMethod('Files')) {
+            $fields->addFieldToTab(
+                'Root.Files',
+                UploadField::create('Files', 'Files', $this->owner->Files())
+            );
+        }
     }
+
     /**
      * @param  bool $title
      * @return string
