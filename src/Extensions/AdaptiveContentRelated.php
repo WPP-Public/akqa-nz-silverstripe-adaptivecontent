@@ -11,10 +11,6 @@ use SilverStripe\Forms\FieldList;
  */
 class AdaptiveContentRelated extends DataExtension
 {
-    private static $db = [
-        'RelationLink' => 'Varchar(255)'
-    ];
-
     private $relationClass;
 
     /**
@@ -34,11 +30,14 @@ class AdaptiveContentRelated extends DataExtension
      */
     public static function get_extra_config($class, $extension, $args)
     {
-        return array(
-            'has_one' => array(
-                'Relation' => $args[0]
-            )
-        );
+        return [
+            'db' => [
+                'RelationLink' => 'Varchar(255)',
+            ],
+            'has_one' => [
+                'Relation' => $args[0],
+            ],
+        ];
     }
 
     /**

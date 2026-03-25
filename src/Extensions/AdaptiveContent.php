@@ -2,49 +2,52 @@
 
 namespace Heyday\AdaptiveContent\Extensions;
 
-use SilverStripe\ORM\DataExtension;
-use SilverStripe\AssetAdmin\Forms\UploadField;
-use SilverStripe\Assets\Image;
 use SilverStripe\Assets\File;
+use SilverStripe\Assets\Image;
+use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\ORM\DataExtension;
 use SilverStripe\View\Parsers\URLSegmentFilter;
 
 /**
- * Class AdaptiveContent
+ * Adaptive content fields for slice-like DataObjects.
+ *
+ * SilverStripe 6+ does not expose extension private static config to {@see ExtensionMiddleware}
+ * the same way as core modules, so schema must be supplied via {@see get_extra_config()}.
  */
 class AdaptiveContent extends DataExtension
 {
     /**
-     * @var array
+     * @param class-string $class Owner class name
+     * @param class-string $extensionClass This extension FQCN
+     * @param mixed $args Constructor args from YAML (if any)
+     * @return array<string, mixed>
      */
-    private static $db = [
-        'Identifier'          => 'Varchar(255)',
-        'SecondaryIdentifier' => 'Varchar(255)',
-        'TertiaryIdentifier'  => 'Varchar(255)',
-        'Title'               => 'Varchar(255)',
-        'SubTitle'            => 'Varchar(255)',
-        'Teaser'              => 'Text',
-        'ShortTeaser'         => 'Text',
-        'Content'             => 'HTMLText',
-        'SecondaryContent'    => 'HTMLText'
-    ];
-
-    /**
-     * @var array
-     */
-    private static $has_one = [
-        'LeadImage'      => Image::class,
-        'SecondaryImage' => Image::class,
-        'LeadFile'       => File::class
-    ];
-
-    /**
-     * @var array
-     */
-    private static $many_many = [
-        'Images' => Image::class,
-        'Files'  => File::class
-    ];
+    public static function get_extra_config($class, $extensionClass, $args)
+    {
+        return [
+            'db' => [
+                'Identifier' => 'Varchar(255)',
+                'SecondaryIdentifier' => 'Varchar(255)',
+                'TertiaryIdentifier' => 'Varchar(255)',
+                'Title' => 'Varchar(255)',
+                'SubTitle' => 'Varchar(255)',
+                'Teaser' => 'Text',
+                'ShortTeaser' => 'Text',
+                'Content' => 'HTMLText',
+                'SecondaryContent' => 'HTMLText',
+            ],
+            'has_one' => [
+                'LeadImage' => Image::class,
+                'SecondaryImage' => Image::class,
+                'LeadFile' => File::class,
+            ],
+            'many_many' => [
+                'Images' => Image::class,
+                'Files' => File::class,
+            ],
+        ];
+    }
 
     /**
      * Generates identifier from title, when identifier doesn't exist
@@ -69,7 +72,7 @@ class AdaptiveContent extends DataExtension
 
         $fields->removeByName([
             'Images',
-            'Files'
+            'Files',
         ]);
 
         if ($this->owner->hasMethod('Images')) {
@@ -88,8 +91,7 @@ class AdaptiveContent extends DataExtension
     }
 
     /**
-     * @param  bool $title
-     * @return string
+     * @param bool $title
      */
     public function getGeneratedIdentifier($title = false)
     {
