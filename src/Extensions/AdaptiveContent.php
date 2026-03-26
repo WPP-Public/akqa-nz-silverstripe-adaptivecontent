@@ -64,10 +64,12 @@ class AdaptiveContent extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
-        if ($this->owner->Identifier == '') {
-            $fields->removeByName('Identifier');
-        } else {
-            $fields->makeFieldReadonly('Identifier');
+        if ($fields->dataFieldByName('Identifier')) {
+            if ($this->owner->Identifier == '') {
+                $fields->removeByName('Identifier');
+            } else {
+                $fields->makeFieldReadonly('Identifier');
+            }
         }
 
         $fields->removeByName([
