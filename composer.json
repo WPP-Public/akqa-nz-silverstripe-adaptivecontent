@@ -13,7 +13,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Heyday\\AdaptiveContent\\": "code/"
+            "Heyday\\AdaptiveContent\\": "src/"
         }
     },
     "extra": {
