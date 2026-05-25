@@ -2,16 +2,16 @@
 
 namespace Heyday\AdaptiveContent\Extensions;
 
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\TreeDropdownField;
 use SilverStripe\Forms\FieldList;
 
 /**
- * Class AdaptiveContentRelated
+ * @extends Extension<\SilverStripe\ORM\DataObject>
  */
-class AdaptiveContentRelated extends DataExtension
+class AdaptiveContentRelated extends Extension
 {
-    private $relationClass;
+    private string $relationClass;
 
     /**
      * @param string $relationClass
@@ -23,12 +23,12 @@ class AdaptiveContentRelated extends DataExtension
     }
 
     /**
-     * @param $class
-     * @param $extension
-     * @param $args
-     * @return array
+     * @param class-string $class
+     * @param class-string $extension
+     * @param mixed $args
+     * @return array<string, mixed>
      */
-    public static function get_extra_config($class, $extension, $args)
+    public static function get_extra_config($class, $extension, $args): array
     {
         return [
             'db' => [
@@ -43,11 +43,11 @@ class AdaptiveContentRelated extends DataExtension
     /**
      * @param FieldList $fields
      */
-    public function updateCMSFields(FieldList $fields)
+    public function updateCMSFields(FieldList $fields): void
     {
         $fields->replaceField(
             'RelationID',
-            new TreeDropdownField(
+            TreeDropdownField::create(
                 'RelationID',
                 'Relation',
                 $this->relationClass

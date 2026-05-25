@@ -2,7 +2,7 @@
 
 namespace Heyday\AdaptiveContent\Extensions;
 
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
 
@@ -12,33 +12,48 @@ use SilverStripe\Forms\DropdownField;
  * This extension renders the SecondaryIdentifier field from the AdaptiveContent extension
  * as a dropdown list of templates. It was primarily written for use with pre 1.0 versions
  * of the heyday/silverstripe-slices module, so may not be much use on its own.
+ *
+ * @extends Extension<\SilverStripe\ORM\DataObject>
  */
-class AdaptiveContentIdentifiersAsTemplates extends DataExtension
+class AdaptiveContentIdentifiersAsTemplates extends Extension
 {
-    private static $has_default_template = true;
+    private static bool $has_default_template = true;
 
-    private static $secondary_identifiers = [];
+    private static array $secondary_identifiers = [];
 
-    public function populateDefaults()
+    /**
+     * @return void
+     */
+    public function onAfterPopulateDefaults(): void
     {
-        if (!$this->owner->config()->get('has_default_template')) {
-            $this->owner->SecondaryIdentifier = reset($this->owner->config()->get('secondary_identifiers'));
+        $owner = $this->owner;
+        if (!$owner->config()->get('has_default_template')) {
+            $identifiers = $owner->config()->get('secondary_identifiers');
+            $identifier = reset($identifiers);
+
+            if ($identifier) {
+                $owner->SecondaryIdentifier = $identifier;
+            } else {
+                $owner->SecondaryIdentifier = '';
+            }
         }
     }
 
 
-    public function updateCMSFields(FieldList $fields)
+    public function updateCMSFields(FieldList $fields): void
     {
+        $owner = $this->owner;
+
         $fields->replaceField(
             'SecondaryIdentifier',
-            $field = new DropdownField(
+            $field = DropdownField::create(
                 'SecondaryIdentifier',
                 'Secondary Identifier',
-                $this->owner->config()->get('secondary_identifiers')
+                $owner->config()->get('secondary_identifiers') ?? []
             )
         );
 
-        if ($this->owner->config()->get('HasDefault')) {
+        if ($owner->config()->get('HasDefault')) {
             $field->setHasEmptyDefault(true);
             $field->setEmptyString('Default');
         }
@@ -49,12 +64,14 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
      * then output: array("ComponentSlice_my-slice", "ComponentSlice_TwoColumn")
      *
      * If HasDefault is true, output: array("ComponentSlice_my-slice", "ComponentSlice_TwoColumn", "ComponentSlice")
-     * @return array
+     * @return list<string>
      */
-    public function getTemplates()
+    public function getTemplates(): array
     {
         $templates = array();
-        $prefix = $this->owner->getTemplateClass();
+        $prefix = $this->owner->hasMethod('getTemplateClass')
+            ? $this->owner->getTemplateClass()
+            : $this->getTemplateClass();
 
         if (!empty($this->owner->Identifier)) {
             $templates[] = $prefix . '_' . $this->owner->Identifier;
@@ -76,7 +93,7 @@ class AdaptiveContentIdentifiersAsTemplates extends DataExtension
      *
      * @return string
      */
-    public function getTemplateClass()
+    public function getTemplateClass(): string
     {
         return $this->owner->ClassName;
     }

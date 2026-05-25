@@ -5,8 +5,8 @@ namespace Heyday\AdaptiveContent\Extensions;
 use SilverStripe\Assets\File;
 use SilverStripe\Assets\Image;
 use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\View\Parsers\URLSegmentFilter;
 
 /**
@@ -14,8 +14,10 @@ use SilverStripe\View\Parsers\URLSegmentFilter;
  *
  * SilverStripe 6+ does not expose extension private static config to {@see ExtensionMiddleware}
  * the same way as core modules, so schema must be supplied via {@see get_extra_config()}.
+ *
+ * @extends Extension<\SilverStripe\ORM\DataObject>
  */
-class AdaptiveContent extends DataExtension
+class AdaptiveContent extends Extension
 {
     /**
      * @param class-string $class Owner class name
@@ -52,7 +54,7 @@ class AdaptiveContent extends DataExtension
     /**
      * Generates identifier from title, when identifier doesn't exist
      */
-    public function onBeforeWrite()
+    public function onBeforeWrite(): void
     {
         if ($this->owner->Identifier == '') {
             $this->owner->Identifier = $this->getGeneratedIdentifier();
@@ -62,7 +64,7 @@ class AdaptiveContent extends DataExtension
     /**
      * @param FieldList $fields
      */
-    public function updateCMSFields(FieldList $fields)
+    public function updateCMSFields(FieldList $fields): void
     {
         if ($fields->dataFieldByName('Identifier')) {
             if ($this->owner->Identifier == '') {
@@ -93,9 +95,9 @@ class AdaptiveContent extends DataExtension
     }
 
     /**
-     * @param bool $title
+     * @param bool|string $title
      */
-    public function getGeneratedIdentifier($title = false)
+    public function getGeneratedIdentifier(bool|string $title = false): string
     {
         return URLSegmentFilter::create()->filter($title ? $title : $this->owner->Title);
     }

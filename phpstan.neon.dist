@@ -1,0 +1,13 @@
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests/php
+    bootstrapFiles:
+        - tests/bootstrap.php
+    scanDirectories:
+        - tests/php/Support
+    ignoreErrors:
+        -
+            identifier: missingType.property
+            path: tests/php/Support/*

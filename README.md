@@ -40,3 +40,11 @@ for an example use of this module.
 composer install --dev
 vendor/bin/phpunit
 ```
+
+## Static analysis
+
+```sh
+composer lint
+```
+
+PHPStan is configured with [silverstan](https://github.com/Cambis/silverstan) for Silverstripe-aware analysis.

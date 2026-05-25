@@ -17,7 +17,7 @@ namespace Heyday\AdaptiveContent\Traits;
  */
 trait ClassBySecondaryIdentifierTrait
 {
-    public function onBeforeWrite()
+    public function onBeforeWrite(): void
     {
         parent::onBeforeWrite();
 
@@ -25,7 +25,7 @@ trait ClassBySecondaryIdentifierTrait
         $this->setClassNameBySecondaryIdentifier();
     }
 
-    public function getTemplateClass()
+    public function getTemplateClass(): string
     {
         return __CLASS__;
     }
@@ -33,7 +33,7 @@ trait ClassBySecondaryIdentifierTrait
     /**
      * Change class name based on the mapping in config key secondaryIdentifierClassMap
      */
-    protected function setClassNameBySecondaryIdentifier()
+    protected function setClassNameBySecondaryIdentifier(): void
     {
         $classMap = $this->config()->get('secondaryIdentifierClassMap');
 
